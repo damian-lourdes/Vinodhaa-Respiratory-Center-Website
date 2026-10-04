@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem('theme');
+      var theme = stored === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+    // splash: plays on every visit (typed URL, bookmark, reload, new tab) except
+    // when arriving by clicking a link from another page of this site
+    try {
+      var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      var reload = nav && nav.type === 'reload';
+      var t = +sessionStorage.getItem('internalNav') || 0;
+      sessionStorage.removeItem('internalNav');
+      if (!reload && Date.now() - t < 5000) document.documentElement.classList.add('no-splash');
+    } catch (e) {}
+  })();
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#155a28" />
+<meta name="description" content="Vinodhaa Respiratory Centre, Anna Nagar East, Chennai — pulmonology and sleep medicine care with Dr. Dhanasekar, 30 years experience. 5.0 rating from 1,157 patient stories." />
+<title>Vinodhaa Respiratory Centre | Pulmonology &amp; Sleep Medicine, Anna Nagar</title>
+<link rel="preload" href="fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/switzer-600.woff2" as="font" type="font/woff2" crossorigin />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalClinic",
+      "name": "Vinodhaa Respiratory Centre, Chennai",
+      "telephone": "+91 98410 32627",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "F 185, Shanshelter, F Block, 9th Street, near Vetri IAS Academy",
+        "addressLocality": "Anna Nagar East, Chennai",
+        "addressRegion": "Tamil Nadu",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 13.08812,
+        "longitude": 80.22224
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "18:30",
+          "closes": "21:30"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "1157"
+      },
+      "medicalSpecialty": "Pulmonary",
+      "sameAs": [
+        "https://www.practo.com/chennai/clinic/vinodhaa-respiratory-centre-anna-nagar"
+      ]
+    },
+    {
+      "@type": "MedicalClinic",
+      "name": "Vinodhaa Respiratory Centre, Kanchipuram",
+      "telephone": "+91 94427 45036",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1, Hospital Road (Bus stand back side)",
+        "addressLocality": "Kanchipuram",
+        "postalCode": "631502",
+        "addressRegion": "Tamil Nadu",
+        "addressCountry": "IN"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Tuesday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ],
+      "medicalSpecialty": "Pulmonary"
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<div class="splash" aria-hidden="true"><img src="images/logo.png" alt="" width="476" height="160" /></div>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.9 21 3 13.1 3 3.5c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z" fill="currentColor"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M12 2.5A9.5 9.5 0 0 0 3.8 17L2.5 21.5l4.6-1.3A9.5 9.5 0 1 0 12 2.5zm0 1.8a7.7 7.7 0 0 1 6.5 11.9 7.7 7.7 0 0 1-9 3l-.4-.2-2.7.8.8-2.6-.2-.4A7.7 7.7 0 0 1 12 4.3zm-3.1 3.8c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.8 2.2.9 2.6.7 3.1.6.5 0 1.6-.6 1.8-1.2.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.5-.3l-2-1c-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.5-.4-.5-.6-.5z" fill="currentColor"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-7.5 7-12.5A7 7 0 0 0 5 9.5C5 14.5 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.7-4.9 4.5 1.3 6.5L12 16.9l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.7L12 2.5z" fill="currentColor"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 9.5h17M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8.5 14l2 2 4-4.3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cal-plus" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 9.5h17M8 3v3M16 3v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 13v5M9.5 15.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2" fill="currentColor"/><path d="M8 12.3l2.6 2.6L16.3 9" fill="none" stroke="var(--paper-raised)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-stethoscope" viewBox="0 0 24 24"><path d="M6 3v6a4 4 0 0 0 8 0V3M6 3H4.5M14 3h1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M10 13v2a5 5 0 0 0 10 0v-1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="20.5" cy="13" r="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8h10.5a2.5 2.5 0 1 0-2.3-3.4M3 12h14.5a2.5 2.5 0 1 1-2.3 3.5M3 16h8.5a2 2 0 1 1-1.8 2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.7 12.2l2.3 2.3 4.3-4.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="9" y="2.5" width="6" height="3.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-grad" viewBox="0 0 24 24"><path d="M12 3L2 8l10 5 10-5-10-5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 10.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c0-3 2.5-5.2 5.5-5.2s5.5 2.2 5.5 5.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="17" cy="9" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 13.3c2.4.3 4.2 2 4.5 4.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-quotes" viewBox="0 0 24 24"><path d="M4 14V9.5C4 6.5 6 4.5 9 4.5v3c-1.4 0-2.2.9-2.2 2H9V14H4zm9 0V9.5c0-3 2-5 5-5v3c-1.4 0-2.2.9-2.2 2H18V14h-5z" fill="currentColor"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8A2.5 2.5 0 0 1 17.5 16H10l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5v-8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="8.5" cy="9.5" r="1" fill="currentColor"/><circle cx="12" cy="9.5" r="1" fill="currentColor"/><circle cx="15.5" cy="9.5" r="1" fill="currentColor"/></symbol>
+  <symbol id="i-lungs" viewBox="0 0 24 24"><path d="M12 3v8.5M12 11.5c-.8 1-1.8 1.6-3 1.8M12 11.5c.8 1 1.8 1.6 3 1.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8.2 6.5C5.8 6.8 3.5 10.4 3.5 15.3c0 2.8 1 4.7 2.9 4.7 2 0 3.6-1.4 3.6-3.8V9.4c0-1.8-.7-3-1.8-2.9zM15.8 6.5c2.4.3 4.7 3.9 4.7 8.8 0 2.8-1 4.7-2.9 4.7-2 0-3.6-1.4-3.6-3.8V9.4c0-1.8.7-3 1.8-2.9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cpap" viewBox="0 0 24 24"><rect x="2.5" y="11" width="11" height="8.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 15.2h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M13.5 14h2.5a2.5 2.5 0 0 0 2.5-2.5V9.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M15.3 3.5h6.4c.1 3.2-1.3 5.5-3.2 6-1.9-.5-3.3-2.8-3.2-6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bipap" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 13l2-3.5 2 2.5 2-4 2 3 1.5-1.5h1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 20.5h8M12 17v3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-o2" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="16.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 6.5h6M9 9h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="14" r="2.3" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="21" r="1" fill="currentColor"/><circle cx="15" cy="21" r="1" fill="currentColor"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.2l2.2 10.5h10.4L20 7.5H6.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="19" r="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="19" r="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24"><rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="16.5" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="18.5" cy="16.5" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5.5 16.5l3.5-7h5l2.5 7M9 9.5L7.8 7H6M14 9.5h3l1.5 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="site" id="siteHeader">
+  <div class="wrap nav-row">
+    <a href="#top" class="brand" aria-label="Vinodhaa Respiratory Centre — home">
+      <img class="brand-logo" src="images/logo.png" alt="Vinodhaa Respiratory Centre — Complete Lung Care" width="476" height="160" />
+    </a>
+    <nav class="links">
+      <a href="#top" aria-current="page">Home</a>
+      <a href="about.html">About</a>
+      <div class="nav-drop">
+        <a href="services.html" aria-haspopup="true">Specialty</a>
+        <div class="drop-menu">
+          <div class="drop-inner">
+            <a class="drop-item" href="respiratory-treatment.html">
+              <span class="chip"><svg class="icon" width="20" height="20"><use href="#i-lungs"/></svg></span>
+              <span><span class="t">Respiratory Treatment</span><span class="s">Asthma, COPD, ILD, pneumonia, TB &amp; lung cancer care</span></span>
+            </a>
+            <a class="drop-item" href="sleep-lab.html">
+              <span class="chip"><svg class="icon" width="20" height="20"><use href="#i-moon"/></svg></span>
+              <span><span class="t">Sleep Lab</span><span class="s">Sleep studies, CPAP, BiPAP &amp; oxygen concentrators</span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <a href="pharmacy.html">Pharmacy</a>
+      <a href="products.html">Products</a>
+      <a href="stories.html">Stories</a>
+      <a href="blog.html">Blog</a>
+      <a href="visit.html">Visit</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="theme-toggle" id="themeToggle" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+        <svg class="icon theme-icon theme-icon-sun" width="13" height="13"><use href="#i-sun"/></svg>
+        <svg class="icon theme-icon theme-icon-moon" width="13" height="13"><use href="#i-moon"/></svg>
+        <span class="theme-knob"></span>
+      </button>
+      <a href="tel:+919841032627" class="nav-phone" aria-label="Call 98410 32627">
+        <span class="ring-phone" aria-hidden="true"><svg class="icon" width="16" height="16"><use href="#i-phone"/></svg><svg class="waves" viewBox="0 0 24 24" width="16" height="16"><path class="w1" d="M12.6 8.6a3.4 3.4 0 0 1 3.4 3.4"/><path class="w2" d="M12.6 5.2a6.8 6.8 0 0 1 6.8 6.8"/><path class="w3" d="M12.6 1.8a10.2 10.2 0 0 1 10.2 10.2"/></svg></span>
+        <span>98410 32627</span>
+      </a>
+      <button type="button" class="btn btn-primary call-nav" data-open-booking>
+        <svg class="icon" width="16" height="16"><use href="#i-cal-plus"/></svg>
+        Book Appointment
+      </button>
+      <button type="button" class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <svg class="icon" width="18" height="18"><use href="#i-list" id="menuIconUse"/></svg>
+      </button>
+    </div>
+  </div>
+  <nav class="mobile-panel" id="mobilePanel">
+    <a class="link" href="#top" aria-current="page">Home</a>
+    <a class="link" href="about.html">About</a>
+    <a class="link" href="services.html">Specialty</a>
+    <a class="link sub" href="respiratory-treatment.html">Respiratory Treatment</a>
+    <a class="link sub" href="sleep-lab.html">Sleep Lab</a>
+    <a class="link" href="pharmacy.html">Pharmacy</a>
+    <a class="link" href="products.html">Products</a>
+    <a class="link" href="stories.html">Stories</a>
+    <a class="link" href="blog.html">Blog</a>
+    <a class="link" href="visit.html">Visit</a>
+    <a class="link" href="tel:+919841032627">Call 98410 32627</a>
+    <button type="button" class="btn btn-primary" data-open-booking>
+      <svg class="icon" width="16" height="16"><use href="#i-cal-plus"/></svg>
+      Book Appointment
+    </button>
+  </nav>
+</header>
+
+<section class="hero-carousel" id="top" aria-roledescription="carousel" aria-label="Highlights">
+<div class="hc-backdrop" aria-hidden="true"><img src="images/lungs-breath.svg" alt="" decoding="async" /></div>
+<div class="hc-viewport">
+<div class="hc-track" id="hcTrack">
+<div class="hc-slide" role="group" aria-roledescription="slide" aria-label="1 of 4">
+  <div class="hero">
+    <div class="orb orb-drift" aria-hidden="true" style="left:-96px; top:-96px; width:288px; height:288px; --orb:var(--accent-soft); opacity:.6;"></div>
+    <div class="orb orb-drift-slow" aria-hidden="true" style="right:-64px; top:160px; width:224px; height:224px; --orb:var(--accent-soft); opacity:.5;"></div>
+    <div>
+      <p class="eyebrow"><span class="eyebrow-dot"></span>Pulmonology &amp; Sleep Medicine, Anna Nagar East</p>
+      <h1>Breathe easier. Sleep better.<span class="h1-stat"><span class="num">30</span> years of lung &amp; sleep expertise</span></h1>
+      <p class="lead">Dr. Dhanasekar treats chest, lung and sleep conditions full-time, with an in-clinic sleep study lab and pharmacy.</p>
+      <div class="hero-ctas">
+        <button type="button" class="btn btn-primary btn-lg" data-open-booking>
+          <svg class="icon" width="17" height="17"><use href="#i-cal-plus"/></svg>
+          Book Appointment
+        </button>
+        <a href="visit.html" class="btn btn-outline btn-lg">
+          Get Directions
+        </a>
+      </div>
+      <div class="hero-cred">
+        <span class="hcr-icon"><svg class="icon" width="20" height="20"><use href="#i-grad"/></svg></span>
+        <p><strong>Professor &amp; HOD, Sri Ramachandra Medical College</strong><span>DNB (Chest) &middot; D.T.C.D. &middot; FRCP (Edin) &middot; FCCP</span></p>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-blob blob-anim"></div>
+      <svg class="wave" viewBox="0 0 400 400" aria-hidden="true">
+        <circle cx="200" cy="200" r="130" fill="none" stroke="var(--line)" stroke-width="1" />
+        <path class="breath-path" d="M40 230 C 100 150, 150 260, 200 200 S 300 130, 360 190" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" />
+      </svg>
+      <div class="float-card fc-doc float-bob">
+        <svg class="icon" width="20" height="20"><use href="#i-stethoscope"/></svg>
+        <p class="t">Dr. T. Dhanasekar</p>
+        <p class="s">Consultant Pulmonologist</p>
+      </div>
+      <div class="float-card fc-sleep float-bob-slow">
+        <svg class="icon" width="20" height="20"><use href="#i-moon"/></svg>
+        <p class="t">Sleep Study Room</p>
+        <p class="s">On-site diagnostics</p>
+      </div>
+      <div class="float-card fc-rating">
+        <svg class="icon" width="16" height="16"><use href="#i-clock"/></svg>
+        <p><strong>Two clinics</strong> · Chennai &amp; Kanchipuram</p>
+      </div>
+    </div>
+  </div>
+</div>
+<a class="hc-slide hc-link" href="sleep-lab.html" role="group" aria-roledescription="slide" aria-label="2 of 4: Sleep Lab">
+  <div class="hero">
+    <div class="orb orb-drift" aria-hidden="true" style="right:-80px; top:-80px; width:300px; height:300px; --orb:var(--accent-soft); opacity:.6;"></div>
+    <div>
+      <div class="partner-logo hc-logo"><img src="images/summa-logo.png" alt="Summa Institute of Sleep Medicine" width="708" height="200" decoding="async" /></div>
+      <p class="eyebrow"><span class="eyebrow-dot"></span>Sleep Lab</p>
+      <h2 class="hc-title">Sleep studies &amp; therapy, in-clinic.</h2>
+      <p class="lead">Diagnosis of sleep apnea and other sleep-related breathing disorders, with CPAP, BiPAP or home oxygen set up under the same doctor.</p>
+      <ol class="hc-steps">
+        <li><span>1</span>Consult</li><li><span>2</span>Sleep study</li><li><span>3</span>Diagnosis</li><li><span>4</span>Therapy</li>
+      </ol>
+      <div class="hero-ctas"><span class="btn btn-primary btn-lg hc-cta">Explore the Sleep Lab <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></span></div>
+    </div>
+    <div class="info-art" aria-hidden="true">
+      <div class="hero-blob blob-anim"></div>
+      <svg class="wave" viewBox="0 0 400 400"><circle cx="200" cy="200" r="138" fill="none" stroke="var(--accent)" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="4 8" /></svg>
+      <div class="ia-core"><svg class="icon" width="40" height="40"><use href="#i-moon"/></svg><p class="t">Sleep Lab</p><p class="s">Overnight studies</p></div>
+      <div class="float-card ia-chip ia-tl float-bob"><svg class="icon" width="20" height="20"><use href="#i-cpap"/></svg><p class="t">CPAP</p><p class="s">Steady airway pressure</p></div>
+      <div class="float-card ia-chip ia-tr float-bob-slow"><svg class="icon" width="20" height="20"><use href="#i-bipap"/></svg><p class="t">BiPAP</p><p class="s">Bilevel pressure</p></div>
+      <div class="float-card ia-chip ia-bl float-bob-slow"><svg class="icon" width="20" height="20"><use href="#i-o2"/></svg><p class="t">Oxygen</p><p class="s">Home concentrators</p></div>
+      <div class="float-card ia-chip ia-br float-bob"><svg class="icon" width="20" height="20"><use href="#i-pulse"/></svg><p class="t">Sleep study</p><p class="s">Breathing &amp; oxygen tracked</p></div>
+    </div>
+  </div>
+</a>
+<a class="hc-slide hc-link" href="pharmacy.html" role="group" aria-roledescription="slide" aria-label="3 of 4: Pharmacy">
+  <div class="hero">
+    <div class="orb orb-drift-slow" aria-hidden="true" style="left:-80px; bottom:-80px; width:280px; height:280px; --orb:var(--accent-soft); opacity:.6;"></div>
+    <div>
+      <p class="eyebrow"><span class="eyebrow-dot"></span>In-clinic Pharmacy</p>
+      <h2 class="hc-title">Medicines, delivered to your door.</h2>
+      <p class="lead">Order on WhatsApp or call <strong>98410 32627</strong>. We pack your prescription at our in-clinic pharmacy and deliver it through Swiggy, Porter or Rapido.</p>
+      <div class="hero-ctas"><span class="btn btn-primary btn-lg hc-cta">See how to order <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></span></div>
+    </div>
+    <div class="info-art ia-flow" aria-hidden="true">
+      <div class="hero-blob blob-anim"></div>
+      <div class="flow-step float-card"><span class="n">1</span><svg class="icon" width="22" height="22"><use href="#i-whatsapp"/></svg><div><p class="t">WhatsApp or call</p><p class="s">Share your prescription</p></div></div>
+      <div class="flow-line"></div>
+      <div class="flow-step float-card"><span class="n">2</span><svg class="icon" width="22" height="22"><use href="#i-pill"/></svg><div><p class="t">Packed at our pharmacy</p><p class="s">Order and total confirmed</p></div></div>
+      <div class="flow-line"></div>
+      <div class="flow-step float-card"><span class="n">3</span><svg class="icon" width="22" height="22"><use href="#i-bike"/></svg><div><p class="t">Delivered to you</p><p class="s">Swiggy &middot; Porter &middot; Rapido</p></div></div>
+    </div>
+  </div>
+</a>
+<a class="hc-slide hc-link" href="products.html" role="group" aria-roledescription="slide" aria-label="4 of 4: Products">
+  <div class="hero">
+    <div class="orb orb-drift" aria-hidden="true" style="right:-60px; bottom:-60px; width:260px; height:260px; --orb:var(--accent-soft); opacity:.6;"></div>
+    <div>
+      <p class="eyebrow"><span class="eyebrow-dot"></span>Products</p>
+      <h2 class="hc-title">CPAP, BiPAP &amp; oxygen concentrators for less.</h2>
+      <p class="lead">Buy breathing and sleep therapy equipment directly from the clinic, priced 5&ndash;10% below market, with guidance from the doctor who prescribed it.</p>
+      <div class="hero-ctas"><span class="btn btn-primary btn-lg hc-cta">View products <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></span></div>
+    </div>
+    <div class="info-art" aria-hidden="true">
+      <div class="hero-blob blob-anim"></div>
+      <div class="ia-sticker"><p class="big">5&ndash;10%</p><p class="small">below market price</p></div>
+      <div class="float-card ia-chip ia-tl float-bob"><svg class="icon" width="20" height="20"><use href="#i-cpap"/></svg><p class="t">CPAP</p><p class="s">Machines &amp; masks</p></div>
+      <div class="float-card ia-chip ia-tr float-bob-slow"><svg class="icon" width="20" height="20"><use href="#i-bipap"/></svg><p class="t">BiPAP</p><p class="s">Bilevel machines</p></div>
+      <div class="float-card ia-chip ia-bc float-bob-slow"><svg class="icon" width="20" height="20"><use href="#i-o2"/></svg><p class="t">Oxygen Concentrators</p><p class="s">For home therapy</p></div>
+    </div>
+  </div>
+</a>
+</div>
+</div>
+<div class="hc-controls">
+  <button type="button" class="hc-arrow" id="hcPrev" aria-label="Previous slide"><svg class="icon" width="14" height="14"><use href="#i-chevron"/></svg></button>
+  <div class="hc-dots" id="hcDots"></div>
+  <button type="button" class="hc-arrow next" id="hcNext" aria-label="Next slide"><svg class="icon" width="14" height="14"><use href="#i-chevron"/></svg></button>
+</div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="track marquee-track" id="marqueeTrack">
+    <div class="track-set" id="marqueeSet">
+      <span class="item"><svg class="icon" width="12" height="12"><use href="#i-star"/></svg>Pulmonology</span>
+      <span class="item"><svg class="icon" width="12" height="12"><use href="#i-star"/></svg>Sleep Medicine</span>
+      <span class="item"><svg class="icon" width="12" height="12"><use href="#i-star"/></svg>Allergy &amp; Immunology</span>
+      <span class="item"><svg class="icon" width="12" height="12"><use href="#i-star"/></svg>Tobacco De-addiction</span>
+      <span class="item"><svg class="icon" width="12" height="12"><use href="#i-star"/></svg>Chest &amp; Lung Disease</span>
+      <span class="item"><svg class="icon" width="12" height="12"><use href="#i-star"/></svg>In-house Sleep Study Room</span>
+    </div>
+  </div>
+</div>
+
+<section class="mission reveal">
+  <p>Vinodhaa Respiratory Centre runs on a <strong>single-specialty approach</strong>: one doctor, one focus, and an in-house sleep lab, so patients get <strong>consistent, experienced care</strong> instead of a rotating roster of specialists.</p>
+</section>
+
+<div class="trustbar">
+  <div class="grid">
+    <div class="stat reveal dir-scale"><p class="value" data-count="30" data-suffix=" yrs">0 yrs</p><p class="label">Experience</p></div>
+    <div class="stat reveal dir-scale" style="transition-delay:.08s"><p class="value" data-count="1157" data-format="comma">0</p><p class="label">Patient stories</p></div>
+  </div>
+</div>
+
+<section class="home-doc" id="doctor">
+  <div class="home-doc-grid">
+    <figure class="home-doc-photo reveal dir-left">
+      <img src="images/dr-dhanasekar.jpg" alt="Dr. T. Dhanasekar, Consultant Pulmonologist" width="400" height="600" loading="lazy" decoding="async" />
+    </figure>
+    <div class="home-doc-text reveal dir-right" style="transition-delay:.08s">
+      <p class="kicker">About the doctor</p>
+      <h2 class="section-title">Dr. T. Dhanasekar</h2>
+      <p class="doc-role">Consultant Pulmonologist</p>
+      <p class="home-doc-creds">DNB (Chest) &middot; D.T.C.D. &middot; FRCP (Edin) &middot; FCCP</p>
+      <p class="home-doc-post"><svg class="icon" width="18" height="18"><use href="#i-grad"/></svg>Professor &amp; HOD, Sri Ramachandra Medical College and Research Institute</p>
+      <p class="home-doc-bio">For 30 years Dr. Dhanasekar has treated chest, lung and sleep conditions as his full-time practice, from asthma and COPD to interstitial lung disease and sleep apnea. Every patient is seen by him personally, at our Chennai and Kanchipuram clinics.</p>
+      <a href="about.html" class="btn btn-primary btn-lg">Learn more <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="band-section">
+  <div class="orb orb-drift-slow" aria-hidden="true" style="right:-80px; top:-80px; width:288px; height:288px; --orb:rgba(255,255,255,0.1);"></div>
+  <div class="wrap">
+    <h2 class="section-title reveal">Why patients choose Vinodhaa.</h2>
+    <div class="whyus-grid">
+      <div class="diff-card reveal dir-left">
+        <div class="chip"><svg class="icon" width="22" height="22"><use href="#i-grad"/></svg></div>
+        <h3>30 years in respiratory care</h3>
+        <p>Dr. Dhanasekar has focused on chest, lung and sleep conditions since 1996, treating nothing else.</p>
+      </div>
+      <div class="diff-card reveal" style="transition-delay:.1s">
+        <div class="chip"><svg class="icon" width="22" height="22"><use href="#i-moon"/></svg></div>
+        <h3>In-house sleep study room</h3>
+        <p>Overnight and diagnostic sleep studies happen on site, so results and follow-up stay with one doctor.</p>
+      </div>
+      <div class="diff-card reveal dir-right" style="transition-delay:.2s">
+        <div class="chip"><svg class="icon" width="22" height="22"><use href="#i-users"/></svg></div>
+        <h3>One doctor, every visit</h3>
+        <p>1,157 patient stories on Practo, all from consultations with Dr. Dhanasekar directly, not a rotating roster.</p>
+      </div>
+    </div>
+    <div class="reach-ctas reveal" style="margin-top:32px;">
+      <a href="about.html" class="btn btn-white btn-lg">
+        Meet Dr. T. Dhanasekar
+        <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="services">
+  <h2 class="section-title reveal">Our specialty.</h2>
+  <div class="svc-feature-grid">
+    <a class="svc-feature reveal dir-left" href="respiratory-treatment.html">
+      <span class="svc-photo"><img src="images/photos/lungs-model.jpg" alt="Anatomical model of human lungs showing the airways" loading="lazy" decoding="async" /></span>
+      <span class="chip"><svg class="icon" width="26" height="26"><use href="#i-lungs"/></svg></span>
+      <p class="kicker">Respiratory Treatment</p>
+      <h3>All-in-one holistic care for easy breathing.</h3>
+      <p>Diagnosis, treatment and long-term follow-up for chronic and acute lung conditions, under one doctor.</p>
+      <div class="tag-list">
+        <span class="tag">Asthma</span><span class="tag">COPD</span><span class="tag">Interstitial lung disease</span><span class="tag">Pneumonia</span><span class="tag">Tuberculosis</span><span class="tag">Pulmonary cancer</span>
+      </div>
+      <span class="more">Explore respiratory care <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></span>
+    </a>
+    <a class="svc-feature reveal dir-right" href="sleep-lab.html" style="transition-delay:.08s">
+      <span class="svc-photo"><img src="images/photos/bedside-lamp.jpg" alt="Bedside lamp glowing beside a made bed at night" loading="lazy" decoding="async" /></span>
+      <span class="chip"><svg class="icon" width="26" height="26"><use href="#i-moon"/></svg></span>
+      <p class="kicker">Sleep Lab</p>
+      <h3>In-clinic sleep studies and therapy.</h3>
+      <p>Diagnosis of sleep apnea and other sleep-related breathing disorders, with the right device to treat them.</p>
+      <div class="tag-list">
+        <span class="tag">Sleep studies</span><span class="tag">CPAP</span><span class="tag">BiPAP</span><span class="tag">Oxygen concentrators</span><span class="tag">Equipment sales</span>
+      </div>
+      <span class="more">Explore the sleep lab <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></span>
+    </a>
+  </div>
+</section>
+
+<section class="stories-section" id="stories">
+  <div class="wrap">
+    <div class="stories-head reveal">
+      <h2 class="section-title">Our patients, their stories.</h2>
+      <div class="rating-line">
+        <svg class="icon" width="18" height="18"><use href="#i-star"/></svg>
+        <span class="num">5.0</span>
+        <span class="of">from 1,157 stories on Practo</span>
+      </div>
+    </div>
+
+    <div class="featured-story reveal dir-scale" style="transition-delay:.05s">
+      <svg class="icon" width="28" height="28"><use href="#i-quotes"/></svg>
+      <p class="summary">A six-month chronic cough went undiagnosed while living in the UK. Post-COVID lung fibrosis was identified within hours of the first visit, with major improvement in four to five weeks.</p>
+      <div class="attrib">
+        <p class="who">Madhanbabu Chandrasekaran</p>
+        <p class="meta">Chronic cough · 4 years ago</p>
+      </div>
+    </div>
+
+    <div class="reach-ctas reveal" style="margin-top:32px;">
+      <a href="stories.html" class="btn btn-outline-invert btn-lg">
+        Read more patient stories
+        <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="band-section">
+  <div class="orb orb-drift" aria-hidden="true" style="left:-64px; bottom:-64px; width:256px; height:256px; --orb:rgba(255,255,255,0.1);"></div>
+  <div class="reach-grid">
+    <div class="reveal dir-left">
+      <h2>Ready when you need us.</h2>
+      <p class="sub">Visit us in Anna Nagar, Chennai or in Kanchipuram. Call ahead for a slot or walk in during clinic hours. The sleep study room is available for on-site diagnostics on request.</p>
+      <div class="reach-ctas">
+        <button type="button" class="btn btn-white btn-lg" data-open-booking>
+          <svg class="icon" width="17" height="17"><use href="#i-cal-plus"/></svg>
+          Book Appointment
+        </button>
+        <a href="visit.html" class="btn btn-outline-invert btn-lg">
+          Find a Clinic
+        </a>
+      </div>
+    </div>
+    <div class="reveal dir-right" style="transition-delay:.08s">
+      <div class="reach-card">
+        <div class="addr-row">
+          <svg class="icon" width="20" height="20"><use href="#i-pin"/></svg>
+          <p><strong>Chennai</strong> · Anna Nagar East</p>
+        </div>
+        <div class="hours-rows">
+          <div class="hours-row"><span class="k"><svg class="icon" width="15" height="15"><use href="#i-clock"/></svg>Mon, Wed - Sat</span><span class="v">6:30 PM - 9:30 PM</span></div>
+        </div>
+        <div class="addr-row reach-gap">
+          <svg class="icon" width="20" height="20"><use href="#i-pin"/></svg>
+          <p><strong>Kanchipuram</strong> · Hospital Road</p>
+        </div>
+        <div class="hours-rows">
+          <div class="hours-row"><span class="k"><svg class="icon" width="15" height="15"><use href="#i-clock"/></svg>Tuesday</span><span class="v">9:00 AM - 6:00 PM</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap" style="padding-top: 64px; padding-bottom: 32px;">
+    <h3 class="footer-head">Respiratory and sleep care, one doctor, two clinics.</h3>
+    <div class="footer-grid">
+      <div>
+        <p class="heading">Chennai</p>
+        <p class="addr">F 185, Shanshelter, F Block, 9th Street, near Vetri IAS Academy, Anna Nagar East, Chennai</p>
+        <div class="lines">
+          <p>Mon, Wed - Sat: 6:30 PM - 9:30 PM</p>
+          <a href="tel:+919841032627">98410 32627</a>
+        </div>
+      </div>
+      <div>
+        <p class="heading">Kanchipuram</p>
+        <p class="addr">1, Hospital Road, (Bus stand back side), Kanchipuram - 631 502</p>
+        <div class="lines">
+          <p>Tuesday: 9:00 AM - 6:00 PM</p>
+          <a href="tel:+919442745036">94427 45036</a>
+        </div>
+      </div>
+      <div>
+        <p class="heading">Contact</p>
+        <div class="lines">
+          <a href="tel:+919841032627">98410 32627</a>
+          <a href="https://wa.me/919841032627?text=Hi%2C%20I%27d%20like%20to%20book%20an%20appointment%20at%20Vinodhaa%20Respiratory%20Centre." target="_blank" rel="noreferrer" style="display:inline-flex; align-items:center; gap:6px;">
+            <svg class="icon" width="15" height="15"><use href="#i-whatsapp"/></svg>
+            WhatsApp
+          </a>
+          <a href="respiratory-treatment.html">Respiratory Treatment</a>
+          <a href="sleep-lab.html">Sleep Lab</a>
+          <a href="pharmacy.html">Pharmacy</a>
+          <a href="products.html">Products</a>
+          <a href="blog.html">Blog</a>
+          <a href="https://www.practo.com/chennai/clinic/vinodhaa-respiratory-centre-anna-nagar" target="_blank" rel="noreferrer">Book on Practo</a>
+        </div>
+      </div>
+      <div>
+        <p class="heading">Conditions</p>
+        <div class="lines">
+          <a href="asthma.html">Asthma</a>
+          <a href="copd.html">COPD</a>
+          <a href="interstitial-lung-disease.html">Interstitial lung disease</a>
+          <a href="pneumonia.html">Pneumonia</a>
+          <a href="tuberculosis.html">Tuberculosis</a>
+          <a href="lung-cancer.html">Lung cancer</a>
+          <a href="sleep-apnea.html">Sleep apnea</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="copyrightYear">© 2026 Vinodhaa Respiratory Centre.</p>
+      <p>Listing details sourced from the clinic's public Practo profile.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="faq-widget" id="faqWidget">
+  <div class="faq-panel" id="faqPanel">
+    <div class="chat-header">
+      <div class="chat-avatar"><svg class="icon" width="18" height="18"><use href="#i-chat"/></svg></div>
+      <div>
+        <p class="t">Care Assistant</p>
+        <p class="s"><span class="dot"></span>Ask about the clinic</p>
+      </div>
+      <button type="button" class="faq-close" id="faqClose" aria-label="Close chat">
+        <svg class="icon" width="14" height="14"><use href="#i-x"/></svg>
+      </button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg bot">Hi! I can help with quick questions about the clinic &mdash; pick one below.</div>
+    </div>
+    <div class="chat-quick" id="chatQuick">
+      <button type="button" class="chat-chip" data-q="location">Where are you located?</button>
+      <button type="button" class="chat-chip" data-q="hours">Clinic hours?</button>
+      <button type="button" class="chat-chip" data-q="fees">Consultation fees?</button>
+      <button type="button" class="chat-chip" data-q="conditions">What do you treat?</button>
+      <button type="button" class="chat-chip" data-q="sleep">In-house sleep lab?</button>
+      <button type="button" class="chat-chip" data-q="pharmacy">Medicine delivery?</button>
+      <button type="button" class="chat-chip" data-q="products">Buy CPAP / BiPAP / oxygen?</button>
+      <button type="button" class="chat-chip" data-q="book">How do I book?</button>
+    </div>
+  </div>
+  <button type="button" class="faq-tab" id="faqTab" aria-expanded="false" aria-controls="faqPanel" aria-label="Chat with us">
+    <span class="faq-ping" aria-hidden="true"></span>
+    <svg class="icon" width="22" height="22"><use href="#i-chat"/></svg>
+  </button>
+</div>
+
+<div class="modal-overlay" id="bookingOverlay">
+  <div class="modal-backdrop" data-close-booking></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-label="Book an appointment">
+    <button type="button" class="modal-close" aria-label="Close" data-close-booking>
+      <svg class="icon" width="16" height="16"><use href="#i-x"/></svg>
+    </button>
+    <p class="modal-title">Book an appointment</p>
+    <p class="modal-sub">Dr. T. Dhanasekar · Consultant Pulmonologist</p>
+    <div class="modal-info">
+      <div class="row">
+        <span class="k"><svg class="icon" width="16" height="16"><use href="#i-pin"/></svg>Chennai</span>
+        <span class="v">Mon, Wed - Sat, 6:30 PM - 9:30 PM</span>
+      </div>
+      <div class="row">
+        <span class="k"><svg class="icon" width="16" height="16"><use href="#i-pin"/></svg>Kanchipuram</span>
+        <span class="v">Tue, 9:00 AM - 6:00 PM</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <a href="tel:+919841032627" class="btn btn-primary">
+        <svg class="icon" width="18" height="18"><use href="#i-phone"/></svg>
+        Call Chennai · 98410 32627
+      </a>
+      <a href="tel:+919442745036" class="btn btn-outline">
+        <svg class="icon" width="18" height="18"><use href="#i-phone"/></svg>
+        Call Kanchipuram · 94427 45036
+      </a>
+      <a href="https://wa.me/919841032627?text=Hi%2C%20I%27d%20like%20to%20book%20an%20appointment%20at%20Vinodhaa%20Respiratory%20Centre." target="_blank" rel="noreferrer" class="btn btn-whatsapp">
+        <svg class="icon" width="19" height="19"><use href="#i-whatsapp"/></svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+    <div class="modal-divider"><span>Or request a slot</span></div>
+    <form class="booking-form" id="bookingForm">
+      <div class="field">
+        <label for="bfName">Name</label>
+        <input type="text" id="bfName" name="name" placeholder="Your full name" required />
+      </div>
+      <div class="field">
+        <label for="bfPhone">Phone number</label>
+        <input type="tel" id="bfPhone" name="phone" placeholder="10-digit mobile number" required />
+      </div>
+      <div class="field">
+        <label for="bfReason">Reason for visit</label>
+        <select id="bfReason" name="reason" required>
+          <option value="" disabled selected>Choose a reason</option>
+          <option>Breathing problem, cough or asthma</option>
+          <option>COPD or long-term lung condition</option>
+          <option>Snoring or sleep apnea (sleep study)</option>
+          <option>CPAP, BiPAP or oxygen concentrator</option>
+          <option>Follow-up visit</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field" id="dateField">
+          <label id="bfDateLabel-label" for="bfDateToggle">Preferred date</label>
+          <button type="button" class="date-toggle placeholder" id="bfDateToggle" aria-haspopup="true" aria-expanded="false">
+            <svg class="icon" width="15" height="15"><use href="#i-cal"/></svg>
+            <span id="bfDateText">Choose a date</span>
+          </button>
+          <input type="hidden" id="bfDate" name="date" required />
+          <div class="cal-pop" id="calPop" role="dialog" aria-label="Choose a date">
+            <div class="cal-head">
+              <button type="button" class="cal-nav prev" id="calPrev" aria-label="Previous month">
+                <svg class="icon" width="12" height="12"><use href="#i-chevron"/></svg>
+              </button>
+              <p class="cal-month" id="calMonth"></p>
+              <button type="button" class="cal-nav next" id="calNext" aria-label="Next month">
+                <svg class="icon" width="12" height="12"><use href="#i-chevron"/></svg>
+              </button>
+            </div>
+            <div class="cal-weekdays">
+              <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="bfTime">Preferred time</label>
+          <select id="bfTime" name="time" required disabled>
+            <option value="" disabled selected>Pick a date first</option>
+          </select>
+        </div>
+      </div>
+      <p class="booking-clinic" id="bfClinic" hidden></p>
+      <button type="submit" class="btn btn-primary" style="justify-content:center; margin-top:4px;">
+        <svg class="icon" width="17" height="17"><use href="#i-cal-plus"/></svg>
+        Request this slot
+      </button>
+    </form>
+    <p class="modal-note">We'll confirm your slot by phone or WhatsApp within clinic hours.</p>
+  </div>
+</div>
+
+<script src="js/script.js" defer></script>
+</body>
+</html>

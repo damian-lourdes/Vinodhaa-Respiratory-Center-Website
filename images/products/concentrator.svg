@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef5ef"/><stop offset="1" stop-color="#e2ede4"/></linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f1f4f6"/><stop offset="1" stop-color="#dfe5ea"/></linearGradient>
+    <linearGradient id="o2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ccf93"/><stop offset="1" stop-color="#1f7a3a"/></linearGradient>
+    <radialGradient id="sh" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#155a28" stop-opacity=".2"/><stop offset="1" stop-color="#155a28" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="400" height="240" fill="url(#bg)"/>
+  <circle cx="320" cy="200" r="100" fill="#ffffff" opacity=".4"/>
+  <ellipse cx="200" cy="222" rx="80" ry="9" fill="url(#sh)"/>
+  <!-- cannula tubing -->
+  <path d="M232 84 C 290 70, 300 140, 262 160 C 236 174, 250 206, 300 200" stroke="#9fd6b0" stroke-width="4" stroke-linecap="round"/>
+  <!-- unit -->
+  <path d="M168 26 h64 a18 18 0 0 1 18 18 v160 a10 10 0 0 1 -10 10 h-80 a10 10 0 0 1 -10 -10 v-160 a18 18 0 0 1 18 -18z" fill="url(#body)" stroke="#d3dadf" stroke-width="1.5"/>
+  <rect x="180" y="34" width="40" height="10" rx="5" fill="#e3e8ec"/>
+  <!-- flow meter -->
+  <rect x="176" y="58" width="16" height="56" rx="8" fill="#f7fbf8" stroke="#bcd3c3" stroke-width="1.5"/>
+  <rect x="180" y="84" width="8" height="26" rx="4" fill="url(#o2)"/>
+  <circle cx="184" cy="80" r="5" fill="#1f7a3a"/>
+  <!-- display + controls -->
+  <rect x="200" y="58" width="36" height="22" rx="5" fill="#13261a"/>
+  <text x="206" y="73" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#7ccf93">O₂ 5</text>
+  <circle cx="208" cy="96" r="7" fill="#f4f6f7" stroke="#cfd8de" stroke-width="1.5"/>
+  <circle cx="228" cy="96" r="7" fill="#1f7a3a"/>
+  <!-- outlet -->
+  <circle cx="226" cy="84" r="0" />
+  <circle cx="232" cy="84" r="4" fill="#cfd8de"/>
+  <!-- vents -->
+  <g stroke="#dbe1e6" stroke-width="3" stroke-linecap="round"><path d="M178 136 h44"/><path d="M178 146 h44"/><path d="M178 156 h44"/><path d="M178 166 h44"/><path d="M178 176 h44"/></g>
+  <!-- wheels -->
+  <circle cx="170" cy="216" r="7" fill="#9aa5ae"/><circle cx="230" cy="216" r="7" fill="#9aa5ae"/>
+</svg>

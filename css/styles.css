@@ -1217,3 +1217,6 @@
   @keyframes lb-breathe-strong { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.1); } }
   html[data-theme="dark"] .lb-wrap { opacity: 0.5; }
   html[data-theme="dark"] .lb-wrap img { filter: brightness(2.2) saturate(.85); }
+  .story-card { display: flex; flex-direction: column; }
+  .story-card .attrib { margin-top: auto; }
+  .story-card p.summary { margin-bottom: 20px; }

@@ -1211,7 +1211,7 @@
   @media (prefers-reduced-motion: no-preference) { .lb-wrap img { animation: lb-breathe 6s ease-in-out infinite; } }
   @keyframes lb-breathe { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.045); } }
   @media (max-width: 767px) {
-    .lb-wrap { width: 135vw; top: 34%; transform: translate(-50%, -50%); opacity: 0.62; }
+    .lb-wrap { width: 135vw; top: 34%; transform: translate(-50%, -50%); opacity: 0.42; }
     .lb-wrap img { animation-name: lb-breathe-strong; }
   }
   @keyframes lb-breathe-strong { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.1); } }

@@ -31,6 +31,7 @@
     --navy-ink: #f2f4fa;
     --navy-ink-soft: #a4add0;
     --band: #16306e;
+    --deep: #1f4e9e; --deep-2: #2455a8; --deep-hover: #2455a8; /* royal sapphire: blue cards, footer and the remaining blue band */
     --band-ink: #ffffff;
     --font-sans: "Switzer", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
     --font-display: "Switzer", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
@@ -52,6 +53,7 @@
     --plum: #c4a6f2;
     --blush-ink: #a8e0b9;
     --alert: #f97066;
+      --deep: #163a78; --deep-2: #1a4284; --deep-hover: #1c4589;
   }
   html[data-theme="light"] {
     --paper: #f8f9f7;
@@ -315,8 +317,8 @@
   .stories-section .rating-line .of { color: var(--ink-soft); }
   /* the story cards use the same deep navy as the blue bands */
   .stories-section .featured-story, .stories-section .story-card { --navy-line: rgba(255,255,255,0.14); --navy-ink: #ffffff; --navy-ink-soft: rgba(255,255,255,0.72);
-    background: linear-gradient(180deg, #16306e 0%, #1b3a80 100%); }
-  html[data-theme="dark"] .stories-section .featured-story, html[data-theme="dark"] .stories-section .story-card { background: linear-gradient(180deg, #111f45 0%, #152752 100%); }
+    background: var(--deep); }
+  html[data-theme="dark"] .stories-section .featured-story, html[data-theme="dark"] .stories-section .story-card { background: var(--deep); }
   .stories-section .btn-outline-invert { border-color: var(--line); color: var(--ink); }
   .stories-section .btn-outline-invert:hover { border-color: var(--accent); }
   .stories-section .btn-outline-invert.spec { --spec-c: var(--accent); --spec-pool: color-mix(in srgb, var(--accent) 12%, transparent); }
@@ -404,7 +406,10 @@
   }
 
   /* ---- footer (navy) ---- */
-  footer.site { border-top: 1px solid var(--navy-line); background: var(--navy); }
+  /* footer: the deep navy of the blue bands */
+  footer.site { --navy-line: rgba(255,255,255,0.14); --navy-ink-soft: rgba(255,255,255,0.72); border-top: 1px solid var(--navy-line);
+    background: linear-gradient(180deg, var(--deep) 0%, var(--deep-2) 100%); }
+  html[data-theme="dark"] footer.site { background: linear-gradient(180deg, var(--deep) 0%, var(--deep-2) 100%); }
   .footer-head { max-width: 560px; font-size: 24px; font-weight: 800; letter-spacing: -0.01em; color: var(--navy-ink); }
   @media (min-width: 768px) { .footer-head { font-size: 30px; } }
   .footer-grid { display: grid; gap: 32px; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--navy-line); }
@@ -1290,10 +1295,48 @@
   /* ---- softer blue bands: lighter gradient instead of deep royal blue ---- */
   :root, html[data-theme="light"] { --band: #2b4f9c; }
   /* blue bands: the deep navy from the logo, with only a slight lift toward the bottom */
-  .band-section { background: linear-gradient(180deg, #16306e 0%, #1b3a80 100%); }
-  html[data-theme="dark"] .band-section { background: linear-gradient(180deg, #111f45 0%, #152752 100%); }
-  .band-section + .band-section { background: linear-gradient(180deg, #1b3a80 0%, #16306e 100%); }
-  html[data-theme="dark"] .band-section + .band-section { background: linear-gradient(180deg, #152752 0%, #111f45 100%); }
+  .band-section { background: linear-gradient(180deg, var(--deep) 0%, var(--deep-2) 100%); }
+  html[data-theme="dark"] .band-section { background: linear-gradient(180deg, var(--deep) 0%, var(--deep-2) 100%); }
+  .band-section + .band-section { background: linear-gradient(180deg, var(--deep-2) 0%, var(--deep) 100%); }
+  html[data-theme="dark"] .band-section + .band-section { background: linear-gradient(180deg, var(--deep-2) 0%, var(--deep) 100%); }
+  /* "Why patients choose Vinodhaa": no band behind it, so the page background and lungs carry on; the cards keep the band
+     navy (like the patient story cards) and the title and button use the page's own colours */
+  .band-section:has(.whyus-grid), .band-section + .band-section:has(.whyus-grid),
+  html[data-theme="dark"] .band-section:has(.whyus-grid) { background: none; }
+  .band-section:has(.whyus-grid) h2 { color: var(--ink); }
+  .band-section:has(.whyus-grid) .diff-card { border-color: rgba(255,255,255,0.14); background: var(--deep); }
+  .band-section:has(.whyus-grid) .diff-card:hover { background: var(--deep-hover); }
+  html[data-theme="dark"] .band-section:has(.whyus-grid) .diff-card { background: var(--deep); }
+  .band-section:has(.whyus-grid) .btn-white { background: none; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+  .band-section:has(.whyus-grid) .btn-white:hover { box-shadow: inset 0 0 0 1px var(--accent); }
+  .band-section:has(.whyus-grid) .btn-white.spec { --spec-c: var(--accent); --spec-pool: color-mix(in srgb, var(--accent) 12%, transparent); }
+  /* "Ready when you need us" (home): same treatment. The clinic card keeps the band navy; the title, text and buttons
+     use the page's colours, with Book Appointment in the soft green of the other main buttons */
+  .band-section:has(.reach-grid), .band-section + .band-section:has(.reach-grid),
+  html[data-theme="dark"] .band-section:has(.reach-grid) { background: none; }
+  .band-section:has(.reach-grid) .reach-grid h2 { color: var(--ink); }
+  .band-section:has(.reach-grid) .reach-grid p.sub { color: var(--ink-soft); }
+  .band-section:has(.reach-grid) .reach-card { border-color: rgba(255,255,255,0.14); background: var(--deep); }
+  html[data-theme="dark"] .band-section:has(.reach-grid) .reach-card { background: var(--deep); }
+  .band-section:has(.reach-grid) .btn-white { background: #e3ede5; color: #2c5539; box-shadow: inset 0 0 0 1px #cfdfd3; }
+  .band-section:has(.reach-grid) .btn-white:hover { background: #d6e6da; }
+  html[data-theme="dark"] .band-section:has(.reach-grid) .btn-white { background: #1b3326; color: #b4e2c1; box-shadow: inset 0 0 0 1px #2b4a37; }
+  .band-section:has(.reach-grid) .btn-outline-invert { border-color: var(--line); color: var(--ink); }
+  .band-section:has(.reach-grid) .btn-outline-invert:hover { border-color: var(--accent); }
+  .band-section:has(.reach-grid) .btn-white.spec, .band-section:has(.reach-grid) .btn-outline-invert.spec { --spec-c: var(--accent); --spec-pool: color-mix(in srgb, var(--accent) 12%, transparent); }
+  /* closing call-to-action bands ("Start your own story.", "Order your medicines now." ...): same, so each page ends on the
+     open background before the navy footer instead of running into it */
+  .band-section:has(.cta-band), .band-section + .band-section:has(.cta-band),
+  html[data-theme="dark"] .band-section:has(.cta-band), html[data-theme="dark"] .band-section + .band-section:has(.cta-band) { background: none; }
+  .band-section:has(.whyus-grid) > .orb, .band-section:has(.reach-grid) > .orb, .band-section:has(.cta-band) > .orb { display: none; }
+  .band-section:has(.cta-band) .cta-band h2 { color: var(--ink); }
+  .band-section:has(.cta-band) .cta-band p { color: var(--ink-soft); }
+  .band-section:has(.cta-band) .btn-white { background: #e3ede5; color: #2c5539; box-shadow: inset 0 0 0 1px #cfdfd3; }
+  .band-section:has(.cta-band) .btn-white:hover { background: #d6e6da; }
+  html[data-theme="dark"] .band-section:has(.cta-band) .btn-white { background: #1b3326; color: #b4e2c1; box-shadow: inset 0 0 0 1px #2b4a37; }
+  .band-section:has(.cta-band) .btn-outline-invert { border-color: var(--line); color: var(--ink); }
+  .band-section:has(.cta-band) .btn-outline-invert:hover { border-color: var(--accent); }
+  .band-section:has(.cta-band) .btn-white.spec, .band-section:has(.cta-band) .btn-outline-invert.spec { --spec-c: var(--accent); --spec-pool: color-mix(in srgb, var(--accent) 12%, transparent); }
 
   /* ---- homepage: about the doctor ---- */
   .home-doc { max-width: 1080px; margin: 0 auto; padding: 8px 20px 72px; }

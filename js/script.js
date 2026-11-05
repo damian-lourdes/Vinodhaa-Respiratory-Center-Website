@@ -320,7 +320,21 @@
     Array.prototype.forEach.call(document.querySelectorAll('.hero h1, .hero .hc-title, .page-hero h1'), function (h) {
       if (split(h) && !h.closest('.hc-slide')) unfold(h, splash ? 950 : 80); // home carousel titles play with their slide (CSS)
     });
-    // section titles: as they scroll into view
+    // home page: the fixed lungs behind the page fade to about half strength as you scroll past the hero (styles in css/styles.css)
+  (function () {
+    var hero = document.querySelector('.hero-carousel'), back = hero && hero.querySelector('.hc-backdrop');
+    if (!back) return;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var f = Math.min(Math.max(window.scrollY / (hero.offsetHeight * 0.8), 0), 1);
+      back.style.setProperty('--lb-fade', f.toFixed(3));
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  })();
+
+  // section titles: as they scroll into view
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); unfold(e.target, 0); } });
     }, { rootMargin: '0px 0px -18% 0px' });
@@ -1120,11 +1134,23 @@
       root.addEventListener('mouseleave', function () { hovered = false; });
       root.addEventListener('focusin', function () { focused = true; });
       root.addEventListener('focusout', function () { focused = false; });
-      setInterval(function () { if (!hovered && !focused && !drag && !document.hidden) go(1); }, cfg.autoplayDelay);
+      setInterval(function () { if (!hovered && !focused && !drag && !held && !document.hidden) go(1); }, cfg.autoplayDelay);
     }
 
     markActive();
     layout(0);
+
+    // product cards below: pointing at one turns the carousel to that machine and holds it there
+    var held = false;
+    Array.prototype.forEach.call(document.querySelectorAll('.product-card'), function (card, idx) {
+      if (idx >= P) return;
+      card.addEventListener('pointerenter', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        held = true;
+        if (focus % P !== idx) setFocus(focus - (focus % P) + idx);
+      });
+      card.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') held = false; });
+    });
   })();
 
   document.getElementById('copyrightYear').textContent = '© ' + new Date().getFullYear() + ' Vinodhaa Respiratory Centre.';

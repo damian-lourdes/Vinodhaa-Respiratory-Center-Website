@@ -152,7 +152,16 @@
       </a>
     </div>
   </div>
-  <figure class="page-photo product-carousel" aria-label="Products we sell"><div class="pc-track"><div class="pc-slide"><img src="images/products/cpap.jpg" alt="CPAP machine" decoding="async" /><span class="pc-cap">CPAP Machines</span></div><div class="pc-slide"><img src="images/products/bipap-mask.jpg" alt="Full-face mask used with BiPAP therapy" decoding="async" /><span class="pc-cap">BiPAP Machines</span></div><div class="pc-slide pc-contain"><img src="images/products/oxygen-concentrator.jpg" alt="Portable oxygen concentrator" decoding="async" /><span class="pc-cap">Oxygen Concentrators</span></div><div class="pc-slide" aria-hidden="true"><img src="images/products/cpap.jpg" alt="" decoding="async" /><span class="pc-cap">CPAP Machines</span></div></div><div class="pc-dots" aria-hidden="true"><span></span><span></span><span></span></div></figure>
+  <figure class="page-photo depth-carousel" id="productDepth" role="group" aria-roledescription="carousel" aria-label="Products we sell" tabindex="0">
+    <div class="dc-stage">
+      <div class="dc-card" role="group" aria-roledescription="slide" aria-label="1 of 3: CPAP Machines"><img src="images/products/cpap.jpg" alt="CPAP machine" decoding="async" draggable="false" /><span class="pc-cap">CPAP Machines</span><span class="dc-tint"></span></div>
+      <div class="dc-card" role="group" aria-roledescription="slide" aria-label="2 of 3: BiPAP Machines"><img src="images/products/bipap-mask.jpg" alt="Full-face mask used with BiPAP therapy" decoding="async" draggable="false" /><span class="pc-cap">BiPAP Machines</span><span class="dc-tint"></span></div>
+      <div class="dc-card dc-contain" role="group" aria-roledescription="slide" aria-label="3 of 3: Oxygen Concentrators"><img src="images/products/oxygen-concentrator.jpg" alt="Portable oxygen concentrator" decoding="async" draggable="false" /><span class="pc-cap">Oxygen Concentrators</span><span class="dc-tint"></span></div>
+    </div>
+    <button type="button" class="dc-arrow dc-prev" aria-label="Previous product"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button type="button" class="dc-arrow dc-next" aria-label="Next product"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="dc-dots" role="tablist" aria-label="Products"></div>
+  </figure>
 </section>
 
 <div class="tint-section">

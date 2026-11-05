@@ -1,16 +1,92 @@
-  // theme toggle
+  // theme toggle: a squishy switch. The knob settles on a spring, stretches with its speed and narrows to keep
+  // its area, swells on hover and can be dragged. Ported from the SquishSwitch component in React Bits
+  // (reactbits.dev) to plain JS; motion's springs are simulated on requestAnimationFrame.
   var themeToggle = document.getElementById('themeToggle');
-  function setToggleState() {
-    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    themeToggle.setAttribute('aria-checked', isDark ? 'true' : 'false');
-  }
-  setToggleState();
-  themeToggle.addEventListener('click', function () {
-    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    setToggleState();
-  });
+  (function () {
+    var knob = themeToggle.querySelector('.theme-knob');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var MIN = 0, MAX = 24, MID = 12;          // knob travel in px inside the 52px track
+    var STRETCH = 0.36, MAX_STRETCH = 0.4, STRETCH_SPEED = 600, HOVER = 1.08;
+    var isDark = function () { return document.documentElement.getAttribute('data-theme') === 'dark'; };
+    var x = isDark() ? MAX : MIN, v = 0;       // knob position and velocity (px, px/s)
+    var flow = 0, flowV = 0;                   // smoothed velocity that drives the stretch
+    var swell = 1, swellV = 0, swellTo = 1;    // hover swell
+    var target = x, held = null, frame = null, last = 0, skipClick = false;
+
+    function setTheme(next) {
+      if (next === (isDark() ? 'dark' : 'light')) return;
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      themeToggle.setAttribute('aria-checked', next === 'dark' ? 'true' : 'false');
+    }
+    themeToggle.setAttribute('aria-checked', isDark() ? 'true' : 'false');
+    themeToggle.classList.add('is-squish');
+
+    function draw() {
+      var s = 1 + Math.min(MAX_STRETCH, Math.abs(flow) / STRETCH_SPEED) * (reduced ? 0 : STRETCH);
+      knob.style.transform = 'translateX(' + x.toFixed(2) + 'px) scale(' + (s * swell).toFixed(4) + ',' + (swell / s).toFixed(4) + ')';
+    }
+    // one spring step: stiffness k, damping c, mass m
+    function spring(pos, vel, to, k, c, m, dt) { var a = (-k * (pos - to) - c * vel) / m; vel += a * dt; return [pos + vel * dt, vel]; }
+
+    function tick(now) {
+      var dt = Math.min((now - last) / 1000, 1 / 30); last = now;
+      var prevX = x;
+      if (!held) { var r = spring(x, v, target, 170, 21.5, 0.9, dt); x = r[0]; v = r[1]; }
+      var instV = (x - prevX) / dt;
+      var f = spring(flow, flowV, instV, 320, 40, 0.6, dt); flow = f[0]; flowV = f[1];
+      var w = spring(swell, swellV, swellTo, 520, 34, 0.6, dt); swell = w[0]; swellV = w[1];
+      draw();
+      var settled = !held && Math.abs(x - target) < 0.01 && Math.abs(v) < 0.01 && Math.abs(flow) < 0.5 && Math.abs(swell - swellTo) < 0.001;
+      if (settled) { x = target; flow = 0; swell = swellTo; draw(); frame = null; }
+      else frame = requestAnimationFrame(tick);
+    }
+    function run() { if (!frame) { last = performance.now(); frame = requestAnimationFrame(tick); } }
+    function settleTo(dark) {
+      target = dark ? MAX : MIN;
+      if (reduced) { x = target; draw(); return; }
+      run();
+    }
+
+    function localX(clientX) { return clientX - themeToggle.getBoundingClientRect().left; }
+    themeToggle.addEventListener('pointerdown', function (e) {
+      if (held || e.button !== 0) return;
+      held = { id: e.pointerId, grab: null, moved: false, startX: e.clientX, darkAtPress: isDark(), slop: e.pointerType === 'touch' ? 8 : 4 };
+      try { themeToggle.setPointerCapture(e.pointerId); } catch (err) {}
+      themeToggle.classList.add('is-held');
+      run();
+    });
+    themeToggle.addEventListener('pointermove', function (e) {
+      if (!held || held.id !== e.pointerId) return;
+      var lx = localX(e.clientX);
+      if (held.grab === null) { held.grab = lx - x; return; }
+      if (!held.moved && Math.abs(e.clientX - held.startX) > held.slop) held.moved = true;
+      if (!held.moved) return;
+      x = Math.min(MAX, Math.max(MIN, lx - held.grab)); v = 0;
+      setTheme(x > MID ? 'dark' : 'light');
+    });
+    function release(e, cancelled) {
+      if (!held || held.id !== e.pointerId) return;
+      var h = held; held = null;
+      try { themeToggle.releasePointerCapture(e.pointerId); } catch (err) {}
+      themeToggle.classList.remove('is-held');
+      if (cancelled) setTheme(h.darkAtPress ? 'dark' : 'light');
+      else if (!h.moved) setTheme(isDark() ? 'light' : 'dark');
+      skipClick = true; setTimeout(function () { skipClick = false; }, 0);
+      settleTo(isDark());
+    }
+    themeToggle.addEventListener('pointerup', function (e) { release(e, false); });
+    themeToggle.addEventListener('pointercancel', function (e) { release(e, true); });
+    themeToggle.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { swellTo = HOVER; run(); } });
+    themeToggle.addEventListener('pointerleave', function () { swellTo = 1; run(); });
+    // keyboard (Enter / Space) and any click the pointer handlers did not already handle
+    themeToggle.addEventListener('click', function () {
+      if (skipClick) { skipClick = false; return; }
+      setTheme(isDark() ? 'light' : 'dark');
+      settleTo(isDark());
+    });
+    draw();
+  })();
 
   // FAQ chat widget
   (function () {
@@ -633,6 +709,157 @@
     }, { threshold: 0.6 });
     obs.observe(el);
   });
+
+  // products hero: 3D depth carousel. Ported from the DepthCarousel component in React Bits
+  // (reactbits.dev) to plain JS; GSAP's power3.out tween is replaced by the same curve on requestAnimationFrame.
+  (function () {
+    var root = document.getElementById('productDepth');
+    if (!root) return;
+    var stage = root.querySelector('.dc-stage');
+    var products = Array.prototype.slice.call(stage.querySelectorAll('.dc-card'));
+    var P = products.length;
+    if (!P) return;
+    var cfg = { cardWidth: 340, depth: 180, spread: 55, tilt: 22, dir: 1, visibleCards: 4, falloff: 0.16, blur: 4, duration: 700, autoplayDelay: 3200 };
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // repeat the set so the stack has depth even with three products; dots still count the products
+    var cards = products.slice();
+    while (cards.length < 6 && P > 1) {
+      products.forEach(function (c) {
+        var copy = c.cloneNode(true);
+        copy.setAttribute('aria-hidden', 'true');
+        stage.appendChild(copy);
+        cards.push(copy);
+      });
+    }
+    var n = cards.length;
+    var tints = cards.map(function (c) { return c.querySelector('.dc-tint'); });
+    var pos = 0, focus = 0, scale = 1, anim = null, drag = null, wheelTimer = null;
+
+    var clamp = function (v, a, b) { return Math.min(Math.max(v, a), b); };
+    var wrap = function (i) { return ((i % n) + n) % n; };
+
+    function layout(p) {
+      for (var i = 0; i < n; i++) {
+        var d = i - p;
+        d = ((d % n) + n) % n;
+        if (d > n / 2) d -= n;
+        var back = Math.max(0, d), shown = Math.abs(d) <= cfg.visibleCards + 0.5;
+        var opacity = shown ? (d < 0 ? Math.max(0, 1 + d) : 1) : 0;
+        var brightness = Math.max(0.15, 1 - back * cfg.falloff);
+        var blurPx = Math.min(cfg.blur, (back / Math.max(1, cfg.visibleCards)) * cfg.blur);
+        var el = cards[i];
+        el.style.transform = 'translate(-50%, -50%) scale(' + scale + ') translateX(' + (cfg.dir * cfg.spread * d).toFixed(2) + 'px) translateZ(' +
+          (-cfg.depth * d).toFixed(2) + 'px) rotateY(' + (cfg.dir * cfg.tilt * clamp(d, 0, 1)).toFixed(3) + 'deg)';
+        el.style.opacity = opacity.toFixed(3);
+        el.style.filter = 'brightness(' + brightness.toFixed(3) + ') blur(' + blurPx.toFixed(2) + 'px)';
+        el.style.zIndex = String(Math.round(2000 - d * 20));
+        el.style.pointerEvents = shown && opacity > 0.05 ? 'auto' : 'none';
+        tints[i].style.opacity = clamp(back * cfg.falloff * 1.25, 0, 0.86).toFixed(3);
+      }
+    }
+
+    function tweenTo(target) {
+      if (anim) cancelAnimationFrame(anim);
+      var from = pos, t0 = performance.now(), dur = reduced ? 0 : cfg.duration;
+      (function step(now) {
+        var t = dur ? Math.min((now - t0) / dur, 1) : 1;
+        pos = from + (target - from) * (1 - Math.pow(1 - t, 3)); // power3.out
+        layout(pos);
+        if (t < 1) anim = requestAnimationFrame(step);
+        else { anim = null; pos = wrap(pos); layout(pos); }
+      })(t0);
+    }
+
+    // dots for the real products
+    var dotsWrap = root.querySelector('.dc-dots'), dots = [];
+    for (var k = 0; k < P; k++) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'dc-dot'; b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', 'Show ' + products[k].querySelector('.pc-cap').textContent);
+      b.addEventListener('click', (function (idx) { return function () { setFocus(focus - (focus % P) + idx); }; })(k));
+      dotsWrap.appendChild(b); dots.push(b);
+    }
+    function markActive() {
+      dots.forEach(function (d, i) { var on = i === focus % P; d.classList.toggle('is-active', on); d.setAttribute('aria-selected', on ? 'true' : 'false'); });
+      cards.forEach(function (c, i) { if (i < P) c.setAttribute('aria-hidden', i === focus % P ? 'false' : 'true'); });
+    }
+
+    function setFocus(raw) {
+      var idx = wrap(raw), delta = idx - pos;
+      delta = ((delta % n) + n) % n;
+      if (delta > n / 2) delta -= n;
+      tweenTo(pos + delta);
+      focus = idx;
+      markActive();
+    }
+    var go = function (step) { setFocus(focus + step); };
+
+    root.querySelector('.dc-prev').addEventListener('click', function () { go(-1); });
+    root.querySelector('.dc-next').addEventListener('click', function () { go(1); });
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    });
+    cards.forEach(function (c, i) { c.addEventListener('click', function () { if (!(drag && drag.moved)) setFocus(i); }); });
+
+    // drag with momentum
+    var stepPx = function () { return Math.max(cfg.cardWidth * 0.55 * scale, 40); };
+    root.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('.dc-arrow, .dc-dot')) return;
+      if (anim) cancelAnimationFrame(anim);
+      drag = { x: e.clientX, start: pos, lastX: e.clientX, lastT: performance.now(), v: 0, moved: false, id: e.pointerId };
+    });
+    root.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x;
+      if (!drag.moved && Math.abs(dx) > 4) { drag.moved = true; root.setPointerCapture(drag.id); }
+      if (!drag.moved) return;
+      var now = performance.now();
+      drag.v = (e.clientX - drag.lastX) / Math.max(now - drag.lastT, 1);
+      drag.lastX = e.clientX; drag.lastT = now;
+      pos = drag.start - dx / stepPx();
+      layout(pos);
+    });
+    function endDrag() {
+      if (!drag) return;
+      var d = drag;
+      setTimeout(function () { drag = null; }, 0); // let the click handler see the drag first
+      if (d.moved) setFocus(Math.round(pos - (d.v * 180) / stepPx()));
+    }
+    root.addEventListener('pointerup', endDrag);
+    root.addEventListener('pointercancel', endDrag);
+
+    // sideways trackpad swipes move the cards; vertical scrolling is left to the page
+    root.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      if (anim) cancelAnimationFrame(anim);
+      pos += clamp((e.deltaMode === 1 ? e.deltaX * 24 : e.deltaX) / (cfg.cardWidth * 0.9), -0.6, 0.6);
+      layout(pos);
+      clearTimeout(wheelTimer);
+      wheelTimer = setTimeout(function () { setFocus(Math.round(pos)); }, 130);
+    }, { passive: false });
+
+    // shrink the stack to fit narrow screens
+    new ResizeObserver(function (entries) {
+      scale = clamp(entries[0].contentRect.width / (cfg.cardWidth + cfg.spread * 2 + 20), 0.4, 1);
+      layout(pos);
+    }).observe(root);
+
+    // autoplay, paused while hovered or focused
+    if (!reduced) {
+      var hovered = false, focused = false;
+      root.addEventListener('mouseenter', function () { hovered = true; });
+      root.addEventListener('mouseleave', function () { hovered = false; });
+      root.addEventListener('focusin', function () { focused = true; });
+      root.addEventListener('focusout', function () { focused = false; });
+      setInterval(function () { if (!hovered && !focused && !drag && !document.hidden) go(1); }, cfg.autoplayDelay);
+    }
+
+    markActive();
+    layout(0);
+  })();
 
   document.getElementById('copyrightYear').textContent = '© ' + new Date().getFullYear() + ' Vinodhaa Respiratory Centre.';
 

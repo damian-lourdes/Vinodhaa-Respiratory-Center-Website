@@ -160,6 +160,10 @@
   html[data-theme="dark"] .theme-toggle .theme-icon-moon { color: var(--accent); }
   .theme-toggle .theme-knob { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: var(--paper-raised); box-shadow: 0 2px 6px rgba(15,29,43,0.18); transition: transform .25s cubic-bezier(.4,0,.2,1); }
   html[data-theme="dark"] .theme-toggle .theme-knob { transform: translateX(24px); }
+  /* squishy knob: JS drives its position and stretch (see the theme toggle in js/script.js) */
+  .theme-toggle { touch-action: pan-y; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
+  .theme-toggle.is-squish .theme-knob { transition: background-color .32s ease, box-shadow .32s ease; will-change: transform; }
+  .theme-toggle.is-held { cursor: grabbing; }
   .mobile-panel { display: none; flex-direction: column; gap: 4px; border-top: 1px solid var(--line); background: var(--paper); padding: 16px 20px; }
   .mobile-panel.open { display: flex; }
   .mobile-panel a.link { padding: 10px 8px; border-radius: 8px; font-size: 15px; font-weight: 500; color: var(--ink-soft); }
@@ -1179,29 +1183,35 @@
   .photo-credits { margin-top: 28px; font-size: 12px; line-height: 1.6; color: var(--ink-faint); }
   .photo-credits a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
-  /* ---- products hero: auto-scrolling product photos (CSS only) ---- */
-  .product-carousel { background: #fff; }
-  .pc-track { display: flex; height: 100%; animation: pc-slide 12s cubic-bezier(.65,0,.35,1) infinite; will-change: transform; }
-  .pc-slide { position: relative; flex: 0 0 100%; height: 100%; }
-  .pc-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .pc-slide.pc-contain img { object-fit: contain; padding: 18px 18px 40px; background: #fff; }
-  .pc-cap { position: absolute; left: 14px; bottom: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.92); color: var(--ink); font-size: 13px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-  .pc-dots { position: absolute; right: 14px; bottom: 20px; display: flex; gap: 6px; }
-  .pc-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.6); box-shadow: 0 0 0 1px rgba(0,0,0,0.12); }
-  .pc-dots span:nth-child(1) { animation: pc-dot1 12s infinite; }
-  .pc-dots span:nth-child(2) { animation: pc-dot2 12s infinite; }
-  .pc-dots span:nth-child(3) { animation: pc-dot3 12s infinite; }
-  .product-carousel:hover .pc-track, .product-carousel:hover .pc-dots span { animation-play-state: paused; }
-  @keyframes pc-slide {
-    0%, 28% { transform: translateX(0); }
-    33.33%, 61.33% { transform: translateX(-100%); }
-    66.66%, 94.66% { transform: translateX(-200%); }
-    100% { transform: translateX(-300%); }
-  }
-  @keyframes pc-dot1 { 0%, 30%, 97%, 100% { background: var(--accent); } 31%, 96% { background: rgba(255,255,255,0.6); } }
-  @keyframes pc-dot2 { 0%, 30% { background: rgba(255,255,255,0.6); } 31%, 63% { background: var(--accent); } 64%, 100% { background: rgba(255,255,255,0.6); } }
-  @keyframes pc-dot3 { 0%, 63% { background: rgba(255,255,255,0.6); } 64%, 96% { background: var(--accent); } 97%, 100% { background: rgba(255,255,255,0.6); } }
-  @media (prefers-reduced-motion: reduce) { .pc-track, .pc-dots span { animation: none; } }
+  /* ---- products hero: 3D depth carousel of product photos ----
+     Ported from the DepthCarousel component in React Bits (reactbits.dev) to plain JS; driven by js/script.js */
+  .page-photo.depth-carousel { aspect-ratio: auto; height: 440px; max-height: none; overflow: visible; background: none; box-shadow: none;
+    perspective: 1400px; perspective-origin: 50% 50%; touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab; outline: none; }
+  .page-photo.depth-carousel::after { display: none; }
+  .page-hero.has-photo .page-photo.depth-carousel { max-height: none; }
+  .depth-carousel:active { cursor: grabbing; }
+  .depth-carousel:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 24px; }
+  .dc-stage { position: absolute; inset: 0; transform-style: preserve-3d; }
+  .dc-card { position: absolute; top: 50%; left: 50%; width: 340px; height: 370px; border-radius: 20px; overflow: hidden; background: #fff;
+    transform: translate(-50%, -50%); transform-origin: center; cursor: pointer; will-change: transform, opacity, filter;
+    box-shadow: 0 30px 60px -22px rgba(15, 23, 51, .45), 0 8px 20px -10px rgba(15, 23, 51, .3); }
+  .dc-card img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+  .dc-card.dc-contain img { object-fit: contain; padding: 18px 18px 46px; }
+  .dc-tint { position: absolute; inset: 0; opacity: 0; pointer-events: none; mix-blend-mode: multiply; background: #0f1733; }
+  .pc-cap { position: absolute; left: 14px; bottom: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.92); color: #121a24; font-size: 13px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+  .dc-arrow { position: absolute; top: 50%; z-index: 3000; transform: translateY(-50%); width: 40px; height: 40px; display: grid; place-items: center;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--paper-raised); color: var(--ink); cursor: pointer;
+    box-shadow: 0 6px 16px rgba(15, 23, 51, .12); transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+  .dc-arrow:hover { border-color: var(--accent); color: var(--accent); }
+  .dc-arrow:active { transform: translateY(-50%) scale(.94); }
+  .dc-prev { left: 0; }
+  .dc-next { right: 0; }
+  .dc-dots { position: absolute; bottom: 0; left: 50%; z-index: 3000; transform: translateX(-50%); display: flex; gap: 8px; padding: 8px 12px; }
+  .dc-dot { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 999px; background: var(--line); cursor: pointer; transition: width .25s ease, background .25s ease; }
+  .dc-dot.is-active { width: 20px; background: var(--accent); }
+  @media (max-width: 1023px) { .page-photo.depth-carousel { height: 400px; } }
+  @media (max-width: 640px) { .page-photo.depth-carousel { height: 320px; margin-top: 8px; } }
+  @media (prefers-reduced-motion: reduce) { .dc-card { will-change: auto; } .dc-arrow, .dc-dot { transition: none; } }
 
   /* ---- breathing lungs, split into two layers for smooth phones ----
      the detailed drawing is a static image that the GPU just scales (no

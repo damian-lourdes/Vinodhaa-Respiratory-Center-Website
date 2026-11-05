@@ -88,6 +88,45 @@
     draw();
   })();
 
+  // header nav: a thin underline rests under the current page's link, glides to whichever link is hovered
+  // or focused, and returns when the pointer leaves the nav
+  (function () {
+    var nav = document.querySelector('header.site nav.links');
+    if (!nav) return;
+    var links = Array.prototype.slice.call(nav.querySelectorAll(':scope > a, :scope > .nav-drop > a'));
+    if (!links.length) return;
+    var bar = document.createElement('span');
+    bar.className = 'nav-underline';
+    bar.setAttribute('aria-hidden', 'true');
+    nav.appendChild(bar);
+    var current = links.filter(function (a) { return a.getAttribute('aria-current') === 'page'; })[0] || null;
+    // pages inside the Specialty menu rest under "Specialty"
+    if (!current && nav.querySelector('.drop-item[aria-current="page"]')) current = nav.querySelector('.nav-drop > a');
+
+    function place(a) {
+      if (!a || !a.offsetParent) { bar.style.opacity = '0'; return; }
+      var n = nav.getBoundingClientRect(), r = a.getBoundingClientRect();
+      var icon = a.querySelector('.icon');                    // keep the line under the words, not the chevron
+      var w = (icon ? icon.getBoundingClientRect().left - 4 : r.right) - r.left;
+      bar.style.transform = 'translateX(' + (r.left - n.left).toFixed(1) + 'px) scaleX(' + Math.max(w, 1).toFixed(1) + ')';
+      bar.style.opacity = '1';
+    }
+    var rest = function () { place(current); };
+
+    links.forEach(function (a) {
+      a.addEventListener('mouseenter', function () { place(a); });
+      a.addEventListener('focus', function () { place(a); });
+    });
+    nav.addEventListener('mouseleave', rest);
+    nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) rest(); });
+    window.addEventListener('resize', rest);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rest);
+
+    rest();
+    // place it first without animating, then let it glide
+    requestAnimationFrame(function () { requestAnimationFrame(function () { bar.classList.add('is-ready'); }); });
+  })();
+
   // FAQ chat widget
   (function () {
     var widget = document.getElementById('faqWidget');

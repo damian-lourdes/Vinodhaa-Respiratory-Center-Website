@@ -1032,6 +1032,12 @@
 
   /* menu items: identical boxes so text sits on the same line in every browser */
   nav.links > a, .nav-drop > a { display: inline-flex; align-items: center; height: 40px; line-height: 1; }
+  /* traveling underline: one 1px-wide line, moved and stretched with transform (see js/script.js) */
+  nav.links { position: relative; }
+  .nav-underline { position: absolute; left: 0; bottom: 4px; width: 1px; height: 2px; border-radius: 2px; background: var(--accent);
+    transform-origin: 0 50%; opacity: 0; pointer-events: none; }
+  .nav-underline.is-ready { transition: transform .38s cubic-bezier(.22,1,.36,1), opacity .2s ease; }
+  @media (prefers-reduced-motion: reduce) { .nav-underline.is-ready { transition: opacity .2s ease; } }
   .nav-drop > a .icon { flex-shrink: 0; margin-top: 1px; }
 
   /* phone menu: Services sub-items stay hidden until you're in the Services section */

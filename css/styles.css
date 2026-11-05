@@ -236,7 +236,7 @@
   .ticker .track { display: flex; width: max-content; }
   .ticker .track-set { display: flex; align-items: center; gap: 40px; margin-right: 40px; }
   .ticker .item { display: flex; align-items: center; gap: 8px; white-space: nowrap; font-size: 13.5px; font-weight: 600; color: var(--accent-strong); }
-  .ticker .item .icon { width: 12px; height: 12px; color: var(--blush); }
+  .ticker .item .dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--leaf); }
 
   /* ---- mission ---- */
   .mission { max-width: 780px; margin: 0 auto; padding: 64px 20px; text-align: center; }

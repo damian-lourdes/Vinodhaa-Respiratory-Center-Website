@@ -225,60 +225,6 @@
     io.observe(steps);
   })();
 
-  // buttons: a specular light on the rim turns toward the cursor and brightens within PROX px, then eases back
-  // to a faint resting glint at the top-left. After React Bits' SpecularButton, with CSS doing the drawing.
-  (function () {
-    var PROX = 200, REST = 315, IDLE = 0;
-    var btns = Array.prototype.slice.call(document.querySelectorAll('.btn:not(.btn-ghost)')).map(function (el) {
-      el.classList.add('spec');
-      ['spec-glow', 'spec-rim'].forEach(function (c) { var s = document.createElement('span'); s.className = c; s.setAttribute('aria-hidden', 'true'); el.appendChild(s); });
-      return { el: el, a: REST, on: IDLE, press: 0, sa: null, so: null };
-    });
-    if (!btns.length) return;
-    var px = 0, py = 0, known = false, raf = 0, last = 0;
-    var ease = function (rate, dt) { return 1 - Math.exp(-dt * rate); };
-
-    function frame(now) {
-      raf = 0;
-      var dt = last ? Math.min((now - last) / 1000, 0.05) : 1 / 60; last = now;
-      var busy = false;
-      btns.forEach(function (b) {
-        var r = b.el.getBoundingClientRect();
-        if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
-        var cx = r.left + r.width / 2, cy = r.top + r.height / 2, ta = REST, near = 0;
-        if (known) {
-          var d = Math.hypot(Math.max(Math.abs(px - cx) - r.width / 2, 0), Math.max(Math.abs(py - cy) - r.height / 2, 0));
-          var t = Math.max(0, Math.min(1, 1 - d / PROX)); near = t * t * (3 - 2 * t);
-          if (near > 0) ta = (Math.atan2(px - cx, -(py - cy)) * 180 / Math.PI + 360) % 360; // 0deg = top, clockwise, as in conic-gradient
-        }
-        var diff = ((ta - b.a + 540) % 360) - 180;
-        b.a = (b.a + diff * ease(8, dt) + 360) % 360;
-        b.on += (near - b.on) * ease(7, dt);
-        b.press *= Math.exp(-dt * 5);
-        var on = Math.min(1, b.on + b.press * 0.8);
-        if (b.sa === null || Math.abs(b.a - b.sa) > 0.2) {
-          b.el.style.setProperty('--spec-a', b.a.toFixed(1) + 'deg'); b.sa = b.a;
-          // where a ray from the centre at that angle meets the edge, a little inside, for the pool of light
-          var rad = b.a * Math.PI / 180, dx = Math.sin(rad), dy = -Math.cos(rad);
-          var k = Math.min(Math.abs(dx) > 1e-6 ? (r.width / 2) / Math.abs(dx) : Infinity, Math.abs(dy) > 1e-6 ? (r.height / 2) / Math.abs(dy) : Infinity) * 0.8;
-          b.el.style.setProperty('--spec-x', (50 + dx * k / r.width * 100).toFixed(1) + '%');
-          b.el.style.setProperty('--spec-y', (50 + dy * k / r.height * 100).toFixed(1) + '%');
-        }
-        if (b.so === null || Math.abs(on - b.so) > 0.004) { b.el.style.setProperty('--spec-on', on.toFixed(3)); b.so = on; }
-        if (Math.abs(diff) > 0.3 || Math.abs(near - b.on) > 0.004 || b.press > 0.005) busy = true;
-      });
-      if (busy) raf = requestAnimationFrame(frame); else last = 0;
-    }
-    var wake = function () { if (!raf) raf = requestAnimationFrame(frame); };
-    window.addEventListener('pointermove', function (e) { px = e.clientX; py = e.clientY; known = true; wake(); }, { passive: true });
-    window.addEventListener('pointerup', function (e) { if (e.pointerType !== 'mouse') { known = false; wake(); } }, { passive: true });
-    document.documentElement.addEventListener('pointerleave', function () { known = false; wake(); });
-    window.addEventListener('scroll', function () { if (known) wake(); }, { passive: true });
-    btns.forEach(function (b) {
-      b.el.addEventListener('pointerdown', function (e) { px = e.clientX; py = e.clientY; known = true; b.press = 1; wake(); });
-    });
-  })();
-
   // titles: fold each letter in (styles in css/styles.css). After React Bits' FoldText. Page titles at the top play on load,
   // after the splash if there is one (home carousel titles play each time their slide arrives); section titles play as they scroll into view. Only the title's own text is split,
   // so a line inside it like the home page's "30 years" stays as it is. Screen readers get the plain words.
@@ -340,31 +286,6 @@
     }, { rootMargin: '0px 0px -18% 0px' });
     Array.prototype.forEach.call(document.querySelectorAll('h2.section-title, .cta-band h2, .reach-grid h2'), function (h) {
       if (!h.children.length && split(h)) io.observe(h);
-    });
-  })();
-
-  // cards: border glow toward the cursor (styles in css/styles.css). --edge is how close the pointer is to the card's
-  // edge (0 at the centre, 100 on the edge) and --angle which side it is on. After React Bits' BorderGlow.
-  (function () {
-    if (!window.matchMedia('(hover: hover)').matches) return;
-    var sel = '.cond-card, .post-card, .svc-feature, .diff-card, .story-card, .side-card, .location-card, .info-card, .sales-card, .reach-card, .featured-story';
-    var dark = '.story-card, .featured-story, .diff-card, .reach-card'; // dark navy or on the blue band
-    Array.prototype.forEach.call(document.querySelectorAll(sel), function (card) {
-      card.classList.add('bglow');
-      if (card.matches(dark)) card.classList.add('bglow-dark');
-      var light = document.createElement('span');
-      light.className = 'edge-light'; light.setAttribute('aria-hidden', 'true');
-      card.appendChild(light);
-      card.addEventListener('pointermove', function (e) {
-        var r = card.getBoundingClientRect(), cx = r.width / 2, cy = r.height / 2;
-        var dx = e.clientX - r.left - cx, dy = e.clientY - r.top - cy;
-        var kx = dx ? cx / Math.abs(dx) : Infinity, ky = dy ? cy / Math.abs(dy) : Infinity;
-        var edge = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
-        var angle = (dx || dy) ? Math.atan2(dy, dx) * 180 / Math.PI + 90 : 0;
-        if (angle < 0) angle += 360;
-        card.style.setProperty('--edge', (edge * 100).toFixed(2));
-        card.style.setProperty('--angle', angle.toFixed(2) + 'deg');
-      });
     });
   })();
 

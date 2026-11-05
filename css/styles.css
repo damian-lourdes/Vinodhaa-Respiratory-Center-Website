@@ -145,6 +145,19 @@
   .btn-ghost { color: var(--ink-soft); padding: 10px 8px; background: none; }
   .btn-ghost:hover { color: var(--ink); transform: none; }
   .btn-lg { padding: 14px 28px; font-size: 15px; }
+  /* specular edge light: a thin light on the button's rim that turns toward the cursor and brightens as it
+     comes near (after React Bits' SpecularButton, drawn with CSS instead of WebGL; js/script.js sets --spec-a/--spec-on) */
+  .btn.spec { position: relative; isolation: isolate; --spec-c: #fff; --spec-pool: rgba(255,255,255,.22); --spec-a: 315deg; --spec-on: 0; --spec-x: 15%; --spec-y: 15%; }
+  .btn-outline.spec { --spec-c: var(--accent); --spec-pool: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .btn-white.spec { --spec-c: var(--band); --spec-pool: color-mix(in srgb, var(--band) 10%, transparent); }
+  .spec-rim, .spec-glow { position: absolute; z-index: -1; border-radius: inherit; pointer-events: none; }
+  .spec-rim { background: conic-gradient(from var(--spec-a), var(--spec-c) 0deg, transparent 46deg, transparent 134deg,
+      color-mix(in srgb, var(--spec-c) 45%, transparent) 180deg, transparent 226deg, transparent 314deg, var(--spec-c) 360deg); }
+  .spec-rim { inset: 0; padding: 1.5px; opacity: calc(.4 + .6 * var(--spec-on));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+  /* a soft pool of light just inside the lit point of the edge */
+  .spec-glow { inset: 0; background: radial-gradient(60px 36px at var(--spec-x) var(--spec-y), var(--spec-pool), transparent 70%); opacity: var(--spec-on); }
+  @media (forced-colors: active) { .spec-rim, .spec-glow { display: none; } }
   .nav-actions { display: flex; align-items: center; gap: 12px; }
   .call-nav { display: none; }
   @media (min-width: 640px) { .call-nav { display: inline-flex; } }
@@ -875,6 +888,135 @@
   .post-card p { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
   .post-card .foot { margin-top: auto; padding-top: 22px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--ink-faint); }
   .post-card .foot b { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--accent); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  /* section titles: fold in. Each letter swings down from its top edge like a paper flap as the title scrolls into view.
+     After React Bits' FoldText; js/script.js splits the title into .ft-piece letters, each with its --i delay. */
+  .fold-text .ft-word { display: inline-block; white-space: nowrap; }
+  .fold-text .ft-seg { display: inline-block; perspective: 700px; }
+  .fold-text .ft-piece { position: relative; display: inline-block; backface-visibility: hidden; transform-origin: 50% 0%;
+    transform: rotateX(-92deg); opacity: 0; will-change: transform, opacity; }
+  .fold-text .ft-piece::after { content: attr(data-t); position: absolute; inset: 0; pointer-events: none; color: transparent; -webkit-text-fill-color: transparent;
+    background: linear-gradient(180deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.22) 42%, rgba(255,255,255,.26) 100%); -webkit-background-clip: text; background-clip: text; opacity: .55; }
+  .fold-text.is-unfolded .ft-piece, .fold-text.is-unfolded .ft-piece::after {
+    transition: transform .65s cubic-bezier(.215,.61,.355,1), opacity .65s cubic-bezier(.215,.61,.355,1); transition-delay: calc(var(--i) * var(--ft-s, 45ms)); }
+  .fold-text.is-unfolded .ft-piece { transform: none; opacity: 1; }
+  .fold-text.is-unfolded .ft-piece::after { opacity: 0; }
+  .fold-text.is-done .ft-piece { will-change: auto; }
+  /* in the home carousel the title folds in each time its slide arrives, alongside the slide's own entrance */
+  .hc-anim .hc-slide .hero > div:not([class]) > .fold-text { opacity: 1; transform: none; transition: none; }
+  .hc-anim .hc-slide.is-active .fold-text .ft-piece, .hc-anim .hc-slide.is-leaving .fold-text .ft-piece { transform: none; opacity: 1; }
+  .hc-anim .hc-slide.is-active .fold-text .ft-piece::after, .hc-anim .hc-slide.is-leaving .fold-text .ft-piece::after { opacity: 0; }
+  .hc-anim .hc-slide.is-active .fold-text .ft-piece, .hc-anim .hc-slide.is-active .fold-text .ft-piece::after {
+    transition: transform .65s cubic-bezier(.215,.61,.355,1), opacity .65s cubic-bezier(.215,.61,.355,1); transition-delay: calc(.3s + var(--i) * var(--ft-s, 45ms)); }
+  html.ft-wait .hc-anim .hc-slide.is-active .fold-text .ft-piece { transform: rotateX(-92deg); opacity: 0; transition: none; }
+  html.ft-wait .hc-anim .hc-slide.is-active .fold-text .ft-piece::after { opacity: .55; transition: none; }
+  html.ft-wait .hc-anim .hc-slide.is-active .fold-text .h1-stat { opacity: 0; transition: none; }
+  .hc-anim .hc-slide .fold-text .h1-stat { opacity: 0; transform: translateY(12px); transition: opacity .35s ease, transform .35s ease; }
+  .hc-anim .hc-slide.is-active .fold-text .h1-stat { opacity: 1; transform: none; transition: opacity .7s ease 1.1s, transform .8s cubic-bezier(.16,1,.3,1) 1.1s; }
+
+  /* cards: border glow. Near a card's edge, a coloured border and a soft glow light up on the side facing the cursor.
+     After React Bits' BorderGlow; js/script.js adds .bglow plus an .edge-light span and sets --edge (0-100) and --angle. */
+  :root { --bg-c1: #3e9a57; --bg-c2: #1f9e8c; --bg-c3: #3b6fd8; --bg-glow: 140deg 45% 40%; --bg-blend: normal; --bg-fill: .22; }
+  html[data-theme="dark"], .bglow-dark { --bg-c1: #7ccf93; --bg-c2: #5fd4c0; --bg-c3: #8fb0f5; --bg-glow: 140deg 65% 72%; --bg-blend: plus-lighter; --bg-fill: .35; }
+  .bglow { --edge: 0; --angle: 45deg; position: relative; isolation: isolate; }
+  .bglow::before, .bglow::after, .bglow > .edge-light { content: ""; position: absolute; inset: -1px; border-radius: inherit; z-index: -1; pointer-events: none;
+    transition: opacity .25s ease-out; }
+  .bglow:not(:hover)::before, .bglow:not(:hover)::after, .bglow:not(:hover) > .edge-light { opacity: 0 !important; transition: opacity .75s ease-in-out; }
+  .bglow::before, .bglow::after {
+    background: radial-gradient(at 80% 55%, var(--bg-c1) 0, transparent 50%), radial-gradient(at 69% 34%, var(--bg-c2) 0, transparent 50%),
+      radial-gradient(at 8% 6%, var(--bg-c3) 0, transparent 50%), radial-gradient(at 41% 38%, var(--bg-c1) 0, transparent 50%),
+      radial-gradient(at 86% 85%, var(--bg-c2) 0, transparent 50%), radial-gradient(at 82% 18%, var(--bg-c3) 0, transparent 50%),
+      radial-gradient(at 51% 4%, var(--bg-c2) 0, transparent 50%), linear-gradient(var(--bg-c1) 0 100%); }
+  /* the coloured border: a 1.5px ring, only within the cone facing the cursor */
+  .bglow::before { padding: 1.5px; opacity: calc((var(--edge) - 50) / 50);
+    -webkit-mask: conic-gradient(from var(--angle), #000 25%, transparent 40%, transparent 60%, #000 75%), linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: source-in, xor; mask-composite: intersect, exclude; }
+  /* a tint of the same colours just inside the edge */
+  .bglow::after { inset: 0; opacity: calc(var(--bg-fill) * (var(--edge) - 50) / 50); mix-blend-mode: var(--bg-blend);
+    -webkit-mask: conic-gradient(from var(--angle), #000 10%, transparent 22%, transparent 78%, #000 90%), linear-gradient(#000 0 0), radial-gradient(ellipse at 50% 50%, #000 40%, transparent 68%);
+    -webkit-mask-composite: source-in, source-out; mask-composite: intersect, subtract; }
+  /* the soft glow, inside and just outside the edge */
+  .bglow > .edge-light { inset: -40px; opacity: calc((var(--edge) - 30) / 70); mix-blend-mode: var(--bg-blend);
+    -webkit-mask-image: conic-gradient(from var(--angle), #000 2.5%, transparent 10%, transparent 90%, #000 97.5%); mask-image: conic-gradient(from var(--angle), #000 2.5%, transparent 10%, transparent 90%, #000 97.5%); }
+  .bglow > .edge-light::before { content: ""; position: absolute; inset: 40px; border-radius: inherit;
+    box-shadow: inset 0 0 0 1px hsl(var(--bg-glow) / 100%), inset 0 0 3px 0 hsl(var(--bg-glow) / 50%), inset 0 0 6px 0 hsl(var(--bg-glow) / 40%),
+      inset 0 0 15px 0 hsl(var(--bg-glow) / 25%), inset 0 0 30px 2px hsl(var(--bg-glow) / 12%),
+      0 0 1px 0 hsl(var(--bg-glow) / 60%), 0 0 6px 0 hsl(var(--bg-glow) / 40%), 0 0 15px 0 hsl(var(--bg-glow) / 30%), 0 0 30px 2px hsl(var(--bg-glow) / 18%), 0 0 50px 2px hsl(var(--bg-glow) / 10%); }
+  @media (hover: none), (forced-colors: active) { .bglow::before, .bglow::after, .bglow > .edge-light { display: none; } }
+
+  /* pharmacy: how to order. Three steps joined by a line that draws from one to the next when the section
+     scrolls into view (js/script.js adds .os-anim, then .is-drawn). Without JS the line is simply drawn. */
+  .order-steps { --node: 56px; --gap: 32px; list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 28px; }
+  .os-step { position: relative; padding-left: calc(var(--node) + 20px); min-height: var(--node); }
+  .os-node { position: absolute; left: 0; top: 0; z-index: 1; width: var(--node); height: var(--node); border-radius: 50%; display: grid; place-items: center;
+    background: var(--accent); color: var(--accent-ink); box-shadow: 0 0 0 6px var(--accent-soft); transition: background .35s ease, color .35s ease, box-shadow .35s ease; }
+  .os-node .icon { width: 24px; height: 24px; }
+  .os-num { display: block; padding-top: 4px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); }
+  .os-step h3 { margin-top: 4px; font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+  .os-step p { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 34ch; }
+  /* connector: a dashed track, with a solid line drawn over it */
+  .os-step:not(:last-child)::before, .os-step:not(:last-child)::after { content: ""; position: absolute; left: calc(var(--node) / 2 - 1px); top: calc(var(--node) + 10px);
+    width: 2px; height: calc(100% - var(--node) - 20px + 28px); border-radius: 2px; }
+  .os-step:not(:last-child)::before { background: repeating-linear-gradient(to bottom, var(--line) 0 6px, transparent 6px 12px); }
+  .os-step:not(:last-child)::after { background: var(--accent); transform-origin: 50% 0; transition: transform .6s cubic-bezier(.65,0,.35,1); }
+  @media (min-width: 768px) {
+    .order-steps { grid-template-columns: repeat(3, 1fr); gap: var(--gap); text-align: center; }
+    .os-step { padding-left: 0; padding-top: calc(var(--node) + 22px); }
+    .os-node { left: 50%; transform: translateX(-50%); }
+    .os-step p { margin-left: auto; margin-right: auto; }
+    .os-step:not(:last-child)::before, .os-step:not(:last-child)::after { top: calc(var(--node) / 2 - 1px); left: calc(50% + var(--node) / 2 + 12px);
+      width: calc(100% + var(--gap) - var(--node) - 24px); height: 2px; }
+    .os-step:not(:last-child)::before { background: repeating-linear-gradient(to right, var(--line) 0 6px, transparent 6px 12px); }
+    .os-step:not(:last-child)::after { transform-origin: 0 50%; }
+  }
+  /* waiting to draw */
+  .order-steps.os-anim .os-node { background: var(--paper-raised); color: var(--ink-faint); box-shadow: inset 0 0 0 1.5px var(--line), 0 0 0 6px transparent; }
+  .order-steps.os-anim .os-step:not(:last-child)::after { transform: scaleY(0); }
+  @media (min-width: 768px) { .order-steps.os-anim .os-step:not(:last-child)::after { transform: scaleX(0); } }
+  .order-steps.os-anim .os-num, .order-steps.os-anim .os-step h3, .order-steps.os-anim .os-step p { opacity: 0; transform: translateY(8px);
+    transition: opacity .45s ease, transform .45s cubic-bezier(.22,1,.36,1); }
+  /* drawn: each marker lights as the line reaches it; step 1 at 0s, the line to 2 over .15-.75s, and so on */
+  .order-steps.os-anim.is-drawn .os-node { background: var(--accent); color: var(--accent-ink); box-shadow: inset 0 0 0 1.5px transparent, 0 0 0 6px var(--accent-soft); }
+  .order-steps.os-anim.is-drawn .os-step:not(:last-child)::after { transform: none; }
+  .order-steps.os-anim.is-drawn .os-num, .order-steps.os-anim.is-drawn .os-step h3, .order-steps.os-anim.is-drawn .os-step p { opacity: 1; transform: none; }
+  .order-steps.is-drawn .os-step:nth-child(1)::after { transition-delay: .15s; }
+  .order-steps.is-drawn .os-step:nth-child(2)::after { transition-delay: .9s; }
+  .order-steps.is-drawn .os-step:nth-child(2) .os-node, .order-steps.is-drawn .os-step:nth-child(2) .os-num, .order-steps.is-drawn .os-step:nth-child(2) h3, .order-steps.is-drawn .os-step:nth-child(2) p { transition-delay: .75s; }
+  .order-steps.is-drawn .os-step:nth-child(3) .os-node, .order-steps.is-drawn .os-step:nth-child(3) .os-num, .order-steps.is-drawn .os-step:nth-child(3) h3, .order-steps.is-drawn .os-step:nth-child(3) p { transition-delay: 1.5s; }
+
+  /* blog: live search and topic filters (built by js/script.js) */
+  .blog-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-bottom: 24px; }
+  /* topics on the left, then the count, search box aligned to the right edge of the cards */
+  .blog-search { order: 3; margin-left: auto; position: relative; display: flex; align-items: center; flex: 0 1 340px; }
+  .blog-search > .icon { position: absolute; left: 16px; color: var(--ink-faint); pointer-events: none; }
+  .blog-search input { width: 100%; height: 44px; padding: 0 40px 0 44px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper-raised);
+    color: var(--ink); font: inherit; font-size: 14.5px; transition: border-color .15s, box-shadow .15s; }
+  .blog-search input::placeholder { color: var(--ink-faint); }
+  .blog-search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .blog-search input::-webkit-search-cancel-button { display: none; }
+  .blog-clear { position: absolute; right: 8px; width: 28px; height: 28px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--ink-faint); cursor: pointer; }
+  .blog-clear:hover { background: var(--accent-soft); color: var(--ink); }
+  .blog-clear[hidden] { display: none; }
+  /* one segmented bar; the dark pill slides to the selected topic (see js/script.js) */
+  .blog-topics { order: 1; position: relative; display: inline-flex; gap: 2px; padding: 4px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper-raised); max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .blog-topics::-webkit-scrollbar { display: none; }
+  .blog-topic-pill { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 999px; background: var(--accent); pointer-events: none; }
+  .blog-topic-pill { will-change: transform, width; }
+  .blog-topics.is-ready .blog-topic-pill { transition: transform .32s cubic-bezier(.65,0,.35,1), width .32s cubic-bezier(.65,0,.35,1); }
+  .blog-topic { position: relative; z-index: 1; flex: none; display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 999px; border: 0; background: transparent;
+    color: var(--ink-soft); font: inherit; font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: color .25s cubic-bezier(.65,0,.35,1); }
+  .blog-topic:hover { color: var(--ink); }
+  .blog-topic[aria-pressed="true"] { color: var(--accent-ink); }
+  .blog-topic:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .blog-count { order: 2; margin: 0; font-size: 13.5px; color: var(--ink-faint); }
+  .post-card mark { background: color-mix(in srgb, var(--accent) 22%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
+  .post-card[hidden] { display: none; }
+  .blog-empty { padding: 48px 0 8px; text-align: center; color: var(--ink-soft); }
+  .blog-empty .t { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .blog-reset { border: 0; background: none; padding: 0; font: inherit; color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  @media (max-width: 767px) { .blog-search { order: 0; margin-left: 0; flex-basis: 100%; } }
+  @media (max-width: 480px) { .blog-topics { gap: 0; padding: 3px; } .blog-topic-pill { top: 3px; bottom: 3px; } .blog-topic { padding: 0 10px; font-size: 13.5px; } }
+  @media (prefers-reduced-motion: reduce) { .blog-topics.is-ready .blog-topic-pill { transition: none; } }
 
   /* ---- carousel entrance animation (only when JS adds .hc-anim) ---- */
   .hc-anim .hc-slide .hero > div:not([class]) > * {
@@ -1000,7 +1142,7 @@
   .svc-photo { display: block; margin: -32px -32px 24px; height: 220px; overflow: hidden; border-radius: 24px 24px 0 0; }
   .svc-photo img { transition: transform .6s cubic-bezier(.16,1,.3,1); }
   .svc-feature:hover .svc-photo img { transform: scale(1.04); }
-  .svc-feature { overflow: hidden; }
+  /* .svc-photo clips its own image, so the card itself does not clip and its edge glow can spread outside */
 
   .post-thumb { display: block; margin: -28px -28px 20px; height: 190px; overflow: hidden; border-radius: 20px 20px 0 0; }
   .post-thumb img { transition: transform .6s cubic-bezier(.16,1,.3,1); }

@@ -1436,3 +1436,65 @@
   .band-section:has(.whyus-grid) .diff-card + .diff-card { border-top: 1px solid rgba(255,255,255,0.14); }
   @media (min-width: 768px) { .band-section:has(.whyus-grid) .diff-card + .diff-card { border-top: 0; border-left: 1px solid rgba(255,255,255,0.14); } }
   .band-section:has(.whyus-grid) .diff-card h3 { font-size: 17px; }
+
+  /* home hero, first slide: Dr. Dhanasekar's photo in place of the floating cards */
+  .hero-art.hero-doc { aspect-ratio: auto; display: grid; place-items: center; }
+  .hero-doc-photo { margin: 0; width: min(340px, 80%); }
+  .hero-doc-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; border-radius: 22px;
+    box-shadow: 0 24px 50px rgba(22,48,110,.16); }
+  .hero-doc-photo figcaption { margin-top: 14px; display: flex; flex-direction: column; gap: 2px; text-align: left; font-size: 14px; color: var(--ink-soft); }
+  .hero-doc-photo b { font-family: "Newsreader", Georgia, serif; font-size: 20px; font-weight: 600; color: var(--ink); }
+  @media (max-width: 767px) { .hero-doc-photo { width: min(260px, 72%); } }
+
+  /* home "About the doctor": text only now that his photo leads the hero; name and credentials beside the bio */
+  @media (min-width: 768px) { .home-doc-grid.home-doc-text-only { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); align-items: start; gap: 64px; } }
+  .home-doc-text-only .home-doc-bio { margin-top: 6px; }
+  @media (min-width: 768px) { .home-doc-text-only .home-doc-bio { margin-top: 44px; } }
+  @media (max-width: 767px) { .home-doc-text-only .home-doc-post { display: block; text-align: center; } }
+
+  /* ---- home carousel, slides 2-4: real content in place of floating cards ---- */
+  .hc-path { margin-top: 18px; font-size: 14.5px; color: var(--ink-soft); }
+  .hero-art.hero-partner, .hero-art.hero-steps { aspect-ratio: auto; display: grid; place-items: center; }
+  .hero-partner-logo { margin: 0; width: min(380px, 86%); text-align: left; }
+  .hero-partner-logo img { display: block; width: 100%; height: auto; }
+  .hero-partner-logo figcaption { margin-top: 16px; font-size: 14px; color: var(--ink-soft); }
+  html[data-theme="dark"] .hero-partner-logo img { filter: brightness(1.15); }
+  .hero-steps-list { margin: 0; padding: 0 0 0 22px; list-style: none; width: min(340px, 86%); border-left: 1px solid var(--line); text-align: left; display: grid; gap: 30px; }
+  .hero-steps-list li { position: relative; display: flex; flex-direction: column; gap: 3px; }
+  .hero-steps-list li::before { content: ""; position: absolute; left: -27px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--accent); }
+  .hero-steps-list b { font-family: "Newsreader", Georgia, serif; font-size: 22px; font-weight: 600; color: var(--ink); }
+  .hero-steps-list span { font-size: 14px; color: var(--ink-soft); }
+  @media (max-width: 767px) { .hero-steps-list b { font-size: 19px; } .hero-steps-list { gap: 22px; } }
+
+  /* ---- symptoms: plain bullets, no boxes or green ticks ---- */
+  .sign-list li { display: block; position: relative; border: 0; border-radius: 0; background: none; padding: 0 0 0 18px; font-weight: 500; }
+  .sign-list li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-faint); }
+  .sign-list { gap: 14px; }
+
+  /* ---- tag pills become a plain line of text separated by dots ---- */
+  .tag-list { gap: 0; row-gap: 4px; }
+  .tag { border: 0; border-radius: 0; background: none; padding: 0; font-size: 14px; font-weight: 500; color: var(--ink-soft); }
+  .tag + .tag::before { content: "\00b7"; margin: 0 9px; color: var(--ink-faint); }
+  .save-badge { border-radius: 0; background: none; padding: 0; font-weight: 600; color: var(--accent); }
+
+  /* ---- Sleep Lab "How it works": open background, a simple line of steps instead of numbered cards ---- */
+  .band-section:has(.steps), .band-section + .band-section:has(.steps), html[data-theme="dark"] .band-section:has(.steps) { background: none; }
+  .band-section:has(.steps) > .orb { display: none; }
+  .band-section:has(.steps) h2 { color: var(--ink); }
+  .band-section:has(.steps) .section-lead { color: var(--ink-soft); }
+  .steps { gap: 28px; }
+  .steps li { border: 0; border-radius: 0; background: none; padding: 20px 0 0; border-top: 2px solid var(--line); }
+  .steps li::before { content: none; }
+  .steps li:first-child { border-top-color: var(--accent); }
+  .steps h3 { margin-top: 0; color: var(--ink); font-size: 17px; }
+  .steps p { color: var(--ink-soft); }
+
+  /* ---- closing call to action: left aligned, title and text beside the buttons, above a thin rule ---- */
+  .band-section:has(.cta-band) .cta-band { text-align: left; display: grid; gap: 20px; align-items: end; border-top: 1px solid var(--line); padding-top: 40px; }
+  @media (min-width: 900px) { .band-section:has(.cta-band) .cta-band { grid-template-columns: minmax(0, 1fr) auto; column-gap: 48px; } }
+  .band-section:has(.cta-band) .cta-band h2 { margin: 0; max-width: 24ch; font-size: 30px; }
+  .band-section:has(.cta-band) .cta-band p { margin: 10px 0 0; max-width: 56ch; }
+  .band-section:has(.cta-band) .cta-band > :not(h2):not(p):not(.reach-ctas) { grid-column: 1; }
+  .band-section:has(.cta-band) .cta-band h2, .band-section:has(.cta-band) .cta-band p { grid-column: 1; }
+  .band-section:has(.cta-band) .cta-band .reach-ctas { margin-top: 0; justify-content: flex-start; }
+  @media (min-width: 900px) { .band-section:has(.cta-band) .cta-band .reach-ctas { grid-column: 2; grid-row: 1 / span 2; align-self: end; } }

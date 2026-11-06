@@ -187,7 +187,8 @@
       document.documentElement.classList.add('ft-wait');
       setTimeout(function () { document.documentElement.classList.remove('ft-wait'); }, 950);
     }
-    Array.prototype.forEach.call(document.querySelectorAll('.hero h1, .hero .hc-title, .page-hero h1'), function (h) {
+    // only the home page headline folds in; every other title appears normally
+    Array.prototype.forEach.call(document.querySelectorAll('.hero-carousel .hero h1'), function (h) {
       if (split(h) && !h.closest('.hc-slide')) unfold(h, splash ? 950 : 80); // home carousel titles play with their slide (CSS)
     });
     // home page: the fixed lungs behind the page fade to about half strength as you scroll past the hero (styles in css/styles.css)
@@ -204,13 +205,6 @@
     update();
   })();
 
-  // section titles: as they scroll into view
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); unfold(e.target, 0); } });
-    }, { rootMargin: '0px 0px -18% 0px' });
-    Array.prototype.forEach.call(document.querySelectorAll('h2.section-title, .cta-band h2, .reach-grid h2'), function (h) {
-      if (!h.children.length && split(h)) io.observe(h);
-    });
   })();
 
   // FAQ chat widget

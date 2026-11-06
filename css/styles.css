@@ -164,25 +164,23 @@
   .menu-btn { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; border: 1px solid var(--line); background: none; color: var(--ink); cursor: pointer; }
   @media (min-width: 1024px) { .menu-btn { display: none; } }
 
-  .theme-toggle { position: relative; flex-shrink: 0; width: 52px; height: 28px; border-radius: 999px; border: 1px solid var(--line); background: var(--accent-soft); padding: 0; cursor: pointer; font-family: inherit; transition: border-color .2s, background .2s; }
-  .theme-toggle:hover { border-color: var(--accent); }
-  .theme-toggle .theme-icon { position: absolute; top: 50%; transform: translateY(-50%); color: var(--ink-faint); pointer-events: none; transition: color .2s; }
-  .theme-toggle .theme-icon-sun { left: 6px; }
-  .theme-toggle .theme-icon-moon { right: 6px; }
-  html[data-theme="light"] .theme-toggle .theme-icon-sun { color: var(--accent); }
-  html[data-theme="dark"] .theme-toggle .theme-icon-moon { color: var(--accent); }
-  .theme-toggle .theme-knob { position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: var(--paper-raised); box-shadow: 0 2px 6px rgba(15,29,43,0.18); transition: transform .25s cubic-bezier(.4,0,.2,1); }
-  html[data-theme="dark"] .theme-toggle .theme-knob { transform: translateX(24px); }
-  /* squishy knob: JS drives its position and stretch (see the theme toggle in js/script.js) */
-  .theme-toggle { touch-action: pan-y; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; }
-  .theme-toggle.is-squish .theme-knob { transition: background-color .32s ease, box-shadow .32s ease; will-change: transform; }
-  .theme-toggle.is-held { cursor: grabbing; }
   .mobile-panel { display: none; flex-direction: column; gap: 4px; border-top: 1px solid var(--line); background: var(--paper); padding: 16px 20px; }
   .mobile-panel.open { display: flex; }
   .mobile-panel a.link { padding: 10px 8px; border-radius: 8px; font-size: 15px; font-weight: 500; color: var(--ink-soft); }
   .mobile-panel a.link:hover { background: var(--accent-soft); color: var(--ink); }
   .mobile-panel .btn { justify-content: center; margin-top: 8px; width: 100%; }
   @media (min-width: 1024px) { .mobile-panel { display: none !important; } }
+
+  /* theme toggle: a round icon button. Moon in light mode (tap for dark), sun in dark mode (tap for light) */
+  .theme-toggle { position: relative; flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: none; padding: 0;
+    display: grid; place-items: center; cursor: pointer; color: var(--ink-soft); transition: border-color .2s, color .2s, background .2s; -webkit-tap-highlight-color: transparent; }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .theme-toggle:active { transform: scale(.94); }
+  .theme-toggle .theme-icon { grid-area: 1 / 1; transition: opacity .25s ease, transform .35s cubic-bezier(.22,1,.36,1); }
+  .theme-toggle .theme-icon-sun { opacity: 0; transform: rotate(-60deg) scale(.6); }
+  html[data-theme="dark"] .theme-toggle .theme-icon-sun { opacity: 1; transform: none; }
+  html[data-theme="dark"] .theme-toggle .theme-icon-moon { opacity: 0; transform: rotate(60deg) scale(.6); }
+  @media (prefers-reduced-motion: reduce) { .theme-toggle .theme-icon { transition: opacity .2s ease; } }
 
   /* ---- hero ---- */
   .hero { position: relative; max-width: 1280px; margin: 0 auto; padding: 56px 20px 72px; display: grid; gap: 48px; align-items: center; text-align: center; overflow: hidden; }
@@ -767,7 +765,6 @@
   .ia-flow .flow-step { position: relative; width: 100%; max-width: 320px; display: flex; align-items: center; gap: 14px; text-align: left; padding: 16px 18px; }
   .ia-flow .flow-step .icon { flex-shrink: 0; width: 24px; height: 24px; color: var(--accent); }
   .ia-flow .flow-step .t { margin-top: 0; font-size: 14px; }
-  .ia-flow .flow-step .n { position: absolute; top: -10px; left: -10px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--blush); color: #fff; font-size: 12px; font-weight: 800; }
   .ia-flow .flow-line { position: relative; width: 2px; height: 28px; background: repeating-linear-gradient(to bottom, var(--accent) 0 4px, transparent 4px 9px); opacity: .6; }
 
   /* ---- about the doctor ---- */

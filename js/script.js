@@ -1,91 +1,15 @@
-  // theme toggle: a squishy switch. The knob settles on a spring, stretches with its speed and narrows to keep
-  // its area, swells on hover and can be dragged. Ported from the SquishSwitch component in React Bits
-  // (reactbits.dev) to plain JS; motion's springs are simulated on requestAnimationFrame.
+  // theme toggle: one round button. It shows a moon in light mode and a sun in dark mode; a tap switches.
   var themeToggle = document.getElementById('themeToggle');
   (function () {
-    var knob = themeToggle.querySelector('.theme-knob');
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var MIN = 0, MAX = 24, MID = 12;          // knob travel in px inside the 52px track
-    var STRETCH = 0.36, MAX_STRETCH = 0.4, STRETCH_SPEED = 600, HOVER = 1.08;
     var isDark = function () { return document.documentElement.getAttribute('data-theme') === 'dark'; };
-    var x = isDark() ? MAX : MIN, v = 0;       // knob position and velocity (px, px/s)
-    var flow = 0, flowV = 0;                   // smoothed velocity that drives the stretch
-    var swell = 1, swellV = 0, swellTo = 1;    // hover swell
-    var target = x, held = null, frame = null, last = 0, skipClick = false;
-
-    function setTheme(next) {
-      if (next === (isDark() ? 'dark' : 'light')) return;
+    function label() { themeToggle.setAttribute('aria-label', isDark() ? 'Switch to light mode' : 'Switch to dark mode'); }
+    label();
+    themeToggle.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('theme', next); } catch (e) {}
-      themeToggle.setAttribute('aria-checked', next === 'dark' ? 'true' : 'false');
-    }
-    themeToggle.setAttribute('aria-checked', isDark() ? 'true' : 'false');
-    themeToggle.classList.add('is-squish');
-
-    function draw() {
-      var s = 1 + Math.min(MAX_STRETCH, Math.abs(flow) / STRETCH_SPEED) * (reduced ? 0 : STRETCH);
-      knob.style.transform = 'translateX(' + x.toFixed(2) + 'px) scale(' + (s * swell).toFixed(4) + ',' + (swell / s).toFixed(4) + ')';
-    }
-    // one spring step: stiffness k, damping c, mass m
-    function spring(pos, vel, to, k, c, m, dt) { var a = (-k * (pos - to) - c * vel) / m; vel += a * dt; return [pos + vel * dt, vel]; }
-
-    function tick(now) {
-      var dt = Math.min((now - last) / 1000, 1 / 30); last = now;
-      var prevX = x;
-      if (!held) { var r = spring(x, v, target, 170, 21.5, 0.9, dt); x = r[0]; v = r[1]; }
-      var instV = (x - prevX) / dt;
-      var f = spring(flow, flowV, instV, 320, 40, 0.6, dt); flow = f[0]; flowV = f[1];
-      var w = spring(swell, swellV, swellTo, 520, 34, 0.6, dt); swell = w[0]; swellV = w[1];
-      draw();
-      var settled = !held && Math.abs(x - target) < 0.01 && Math.abs(v) < 0.01 && Math.abs(flow) < 0.5 && Math.abs(swell - swellTo) < 0.001;
-      if (settled) { x = target; flow = 0; swell = swellTo; draw(); frame = null; }
-      else frame = requestAnimationFrame(tick);
-    }
-    function run() { if (!frame) { last = performance.now(); frame = requestAnimationFrame(tick); } }
-    function settleTo(dark) {
-      target = dark ? MAX : MIN;
-      if (reduced) { x = target; draw(); return; }
-      run();
-    }
-
-    function localX(clientX) { return clientX - themeToggle.getBoundingClientRect().left; }
-    themeToggle.addEventListener('pointerdown', function (e) {
-      if (held || e.button !== 0) return;
-      held = { id: e.pointerId, grab: null, moved: false, startX: e.clientX, darkAtPress: isDark(), slop: e.pointerType === 'touch' ? 8 : 4 };
-      try { themeToggle.setPointerCapture(e.pointerId); } catch (err) {}
-      themeToggle.classList.add('is-held');
-      run();
+      label();
     });
-    themeToggle.addEventListener('pointermove', function (e) {
-      if (!held || held.id !== e.pointerId) return;
-      var lx = localX(e.clientX);
-      if (held.grab === null) { held.grab = lx - x; return; }
-      if (!held.moved && Math.abs(e.clientX - held.startX) > held.slop) held.moved = true;
-      if (!held.moved) return;
-      x = Math.min(MAX, Math.max(MIN, lx - held.grab)); v = 0;
-      setTheme(x > MID ? 'dark' : 'light');
-    });
-    function release(e, cancelled) {
-      if (!held || held.id !== e.pointerId) return;
-      var h = held; held = null;
-      try { themeToggle.releasePointerCapture(e.pointerId); } catch (err) {}
-      themeToggle.classList.remove('is-held');
-      if (cancelled) setTheme(h.darkAtPress ? 'dark' : 'light');
-      else if (!h.moved) setTheme(isDark() ? 'light' : 'dark');
-      skipClick = true; setTimeout(function () { skipClick = false; }, 0);
-      settleTo(isDark());
-    }
-    themeToggle.addEventListener('pointerup', function (e) { release(e, false); });
-    themeToggle.addEventListener('pointercancel', function (e) { release(e, true); });
-    themeToggle.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { swellTo = HOVER; run(); } });
-    themeToggle.addEventListener('pointerleave', function () { swellTo = 1; run(); });
-    // keyboard (Enter / Space) and any click the pointer handlers did not already handle
-    themeToggle.addEventListener('click', function () {
-      if (skipClick) { skipClick = false; return; }
-      setTheme(isDark() ? 'light' : 'dark');
-      settleTo(isDark());
-    });
-    draw();
   })();
 
   // header nav: a thin underline rests under the current page's link, glides to whichever link is hovered

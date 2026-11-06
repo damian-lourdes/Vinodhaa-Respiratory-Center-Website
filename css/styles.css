@@ -202,7 +202,6 @@
   .hero-blob { position: absolute; inset: 6%; background: var(--accent-soft); border-radius: 48% 52% 58% 42% / 55% 45% 55% 45%; }
   .hero-art svg.wave { position: absolute; inset: 0; width: 100%; height: 100%; }
   .breath-path { stroke-dasharray: 480; stroke-dashoffset: 480; }
-  @media (prefers-reduced-motion: no-preference) { .breath-path { animation: draw 1.8s cubic-bezier(.16,1,.3,1) forwards; } .hc-anim .hc-slide:not(.is-active) .breath-path { animation: none; } }
   @media (prefers-reduced-motion: reduce) { .breath-path { stroke-dashoffset: 0; } }
   @keyframes draw { to { stroke-dashoffset: 0; } }
   .float-card { position: absolute; width: 168px; border-radius: 16px; border: 1px solid var(--line); background: var(--paper-raised); padding: 14px 16px; box-shadow: 0 16px 32px rgba(22,48,110,0.14); }
@@ -711,11 +710,6 @@
   /* ---- hero carousel ---- */
   .hero-carousel { position: relative; overflow: hidden; }
   .hc-viewport { overflow: hidden; }
-  .hc-track { display: flex; touch-action: pan-y; transition: transform .85s cubic-bezier(.7,0,.2,1); will-change: transform; }
-  @media (prefers-reduced-motion: reduce) { .hc-track { transition: none; } }
-  .hc-slide { flex: 0 0 100%; min-width: 0; display: flex; color: inherit; contain: layout paint; }
-  .hc-slide > .hero { width: 100%; padding-bottom: 104px; }
-  @media (min-width: 768px) { .hc-slide > .hero { padding-bottom: 112px; } }
   .hc-link { cursor: pointer; }
   .hc-link:focus-visible { outline: 2px solid var(--accent); outline-offset: -6px; border-radius: 24px; }
   .hc-cta .icon { transition: transform .2s; }
@@ -731,14 +725,6 @@
   .hc-steps li { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper-raised); padding: 6px 14px 6px 6px; font-size: 13px; font-weight: 600; }
   .hc-steps li span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-strong); font-size: 11.5px; font-weight: 800; }
 
-  .hc-controls { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 14px; }
-  .hc-arrow { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink); cursor: pointer; transition: border-color .15s, transform .15s; }
-  .hc-arrow:hover { border-color: var(--accent); transform: scale(1.06); }
-  .hc-arrow .icon { transform: rotate(90deg); }
-  .hc-arrow.next .icon { transform: rotate(-90deg); }
-  .hc-dots { display: flex; align-items: center; gap: 8px; }
-  .hc-dot { width: 8px; height: 8px; border-radius: 999px; border: none; padding: 0; background: color-mix(in srgb, var(--ink) 20%, transparent); cursor: pointer; transition: width .3s, background .3s; }
-  .hc-dot[aria-current="true"] { width: 28px; background: var(--accent); }
 
   /* infographic art */
   .info-art { position: relative; margin: 0 auto; aspect-ratio: 1; width: 100%; max-width: 460px; }
@@ -918,16 +904,6 @@
   .fold-text.is-unfolded .ft-piece::after { opacity: 0; }
   .fold-text.is-done .ft-piece { will-change: auto; }
   /* in the home carousel the title folds in each time its slide arrives, alongside the slide's own entrance */
-  .hc-anim .hc-slide .hero > div:not([class]) > .fold-text { opacity: 1; transform: none; transition: none; }
-  .hc-anim .hc-slide.is-active .fold-text .ft-piece, .hc-anim .hc-slide.is-leaving .fold-text .ft-piece { transform: none; opacity: 1; }
-  .hc-anim .hc-slide.is-active .fold-text .ft-piece::after, .hc-anim .hc-slide.is-leaving .fold-text .ft-piece::after { opacity: 0; }
-  .hc-anim .hc-slide.is-active .fold-text .ft-piece, .hc-anim .hc-slide.is-active .fold-text .ft-piece::after {
-    transition: transform .65s cubic-bezier(.215,.61,.355,1), opacity .65s cubic-bezier(.215,.61,.355,1); transition-delay: calc(.3s + var(--i) * var(--ft-s, 45ms)); }
-  html.ft-wait .hc-anim .hc-slide.is-active .fold-text .ft-piece { transform: rotateX(-92deg); opacity: 0; transition: none; }
-  html.ft-wait .hc-anim .hc-slide.is-active .fold-text .ft-piece::after { opacity: .55; transition: none; }
-  html.ft-wait .hc-anim .hc-slide.is-active .fold-text .h1-stat { opacity: 0; transition: none; }
-  .hc-anim .hc-slide .fold-text .h1-stat { opacity: 0; transform: translateY(12px); transition: opacity .35s ease, transform .35s ease; }
-  .hc-anim .hc-slide.is-active .fold-text .h1-stat { opacity: 1; transform: none; transition: opacity .7s ease 1.1s, transform .8s cubic-bezier(.16,1,.3,1) 1.1s; }
 
   /* pharmacy: how to order. Three steps joined by a line that draws from one to the next when the section
      scrolls into view (js/script.js adds .os-anim, then .is-drawn). Without JS the line is simply drawn. */
@@ -1003,80 +979,13 @@
   @media (max-width: 480px) { .blog-topics { gap: 0; padding: 3px; } .blog-topic-pill { top: 3px; bottom: 3px; } .blog-topic { padding: 0 10px; font-size: 13.5px; } }
   @media (prefers-reduced-motion: reduce) { .blog-topics.is-ready .blog-topic-pill { transition: none; } }
 
-  /* ---- carousel entrance animation (only when JS adds .hc-anim) ---- */
-  .hc-anim .hc-slide .hero > div:not([class]) > * {
-    opacity: 0; transform: translateY(26px);
-    transition: opacity .35s ease, transform .35s ease;
-  }
-  .hc-anim .hc-slide .hero-art, .hc-anim .hc-slide .info-art {
-    opacity: 0; transform: translateX(calc(var(--hc-dir, 1) * 22%)) scale(.9);
-    transition: opacity .35s ease, transform .35s ease;
-  }
-  /* leaving slide: artwork races ahead of the text in the direction of travel */
-  .hc-anim .hc-slide.is-leaving .hero-art, .hc-anim .hc-slide.is-leaving .info-art {
-    opacity: 0; transform: translateX(calc(var(--hc-dir, 1) * -22%)) scale(.94);
-    transition: transform .85s cubic-bezier(.7,0,.2,1), opacity .55s ease .1s;
-  }
-  .hc-anim .hc-slide.is-leaving .hero > div:not([class]) > * {
-    opacity: 0; transform: translateX(calc(var(--hc-dir, 1) * -40px));
-    transition: transform .85s cubic-bezier(.7,0,.2,1), opacity .4s ease;
-  }
-  .hc-anim .hc-slide .hero-art .float-card, .hc-anim .hc-slide .info-art .float-card,
-  .hc-anim .hc-slide .info-art .ia-core, .hc-anim .hc-slide .info-art .ia-sticker { opacity: 0; transition: opacity .3s ease; }
 
-  .hc-anim .hc-slide.is-active .hero > div:not([class]) > * {
-    opacity: 1; transform: none;
-    transition: opacity .7s ease, transform .8s cubic-bezier(.16,1,.3,1);
-  }
-  .hc-anim .hc-slide.is-active .hero > div:not([class]) > :nth-child(1) { transition-delay: .35s; }
-  .hc-anim .hc-slide.is-active .hero > div:not([class]) > :nth-child(2) { transition-delay: .45s; }
-  .hc-anim .hc-slide.is-active .hero > div:not([class]) > :nth-child(3) { transition-delay: .55s; }
-  .hc-anim .hc-slide.is-active .hero > div:not([class]) > :nth-child(4) { transition-delay: .65s; }
-  .hc-anim .hc-slide.is-active .hero > div:not([class]) > :nth-child(5) { transition-delay: .75s; }
-  .hc-anim .hc-slide.is-active .hero > div:not([class]) > :nth-child(6) { transition-delay: .85s; }
-  .hc-anim .hc-slide.is-active .hero-art, .hc-anim .hc-slide.is-active .info-art {
-    opacity: 1; transform: none;
-    transition: opacity .7s ease .15s, transform 1.05s cubic-bezier(.65,0,.15,1);
-  }
-  .hc-anim .hc-slide.is-active .float-card, .hc-anim .hc-slide.is-active .ia-core, .hc-anim .hc-slide.is-active .ia-sticker { opacity: 1; transition: opacity .6s ease; }
-  .hc-anim .hc-slide.is-active .ia-core, .hc-anim .hc-slide.is-active .ia-sticker { transition-delay: .55s; }
-  .hc-anim .hc-slide.is-active :is(.fc-doc, .ia-tl) { transition-delay: .75s; }
-  .hc-anim .hc-slide.is-active :is(.fc-sleep, .ia-tr) { transition-delay: .9s; }
-  .hc-anim .hc-slide.is-active :is(.fc-rating, .ia-bl, .ia-bc) { transition-delay: 1.05s; }
-  .hc-anim .hc-slide.is-active .ia-br { transition-delay: 1.2s; }
-  .hc-anim .hc-slide.is-active .ia-flow > :nth-child(2) { transition-delay: .6s; }
-  .hc-anim .hc-slide.is-active .ia-flow > :nth-child(4) { transition-delay: .8s; }
-  .hc-anim .hc-slide.is-active .ia-flow > :nth-child(6) { transition-delay: 1s; }
+  /* leaving slide: artwork races ahead of the text in the direction of travel */
 
   /* progress fill on the active dot */
-  .hc-dot { position: relative; overflow: hidden; }
-  .hc-dot.run::after {
-    content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--accent-strong);
-    transform: scaleX(0); transform-origin: left center;
-    animation: hc-progress var(--hc-interval, 6000ms) linear forwards;
-  }
-  .hc-dot.run[aria-current="true"] { background: color-mix(in srgb, var(--accent) 45%, transparent); }
-  .hero-carousel.is-paused .hc-dot.run::after { animation-play-state: paused; }
   @keyframes hc-progress { to { transform: scaleX(1); } }
 
   /* ---- headline word reveal (words rise from behind a mask) ---- */
-  .hc-anim .hc-slide .hero > div:not([class]) > :is(h1, h2),
-  .hc-anim .hc-slide.is-active .hero > div:not([class]) > :is(h1, h2),
-  .hc-anim .hc-slide.is-leaving .hero > div:not([class]) > :is(h1, h2) { opacity: 1; transform: none; transition: none; }
-  .hc-slide .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
-  .hc-slide .w > span { display: inline-block; }
-  .hc-slide .w.w-block { display: block; }
-  .hc-slide .w.w-block > span { display: block; }
-  .hc-anim .hc-slide .w > span {
-    transform: translateY(110%); opacity: 0;
-    transition: transform .3s ease, opacity .3s ease;
-  }
-  .hc-anim .hc-slide.is-active .w > span {
-    transform: none; opacity: 1;
-    transition: transform .75s cubic-bezier(.16,1,.3,1), opacity .5s ease;
-    transition-delay: calc(.28s + var(--i, 0) * 55ms);
-  }
-  .hc-anim .hc-slide.is-leaving .w > span { transform: translateY(-110%); opacity: 0; transition: transform .45s cubic-bezier(.7,0,.2,1), opacity .35s ease; transition-delay: 0s; }
 
   /* ---- typography: Switzer throughout ---- */
   h1, h2, h3, .hc-title, .modal-title, .footer-head, .trustbar .value, .ia-core .t, .ia-sticker .big,
@@ -1498,3 +1407,16 @@
   .band-section:has(.cta-band) .cta-band h2, .band-section:has(.cta-band) .cta-band p { grid-column: 1; }
   .band-section:has(.cta-band) .cta-band .reach-ctas { margin-top: 0; justify-content: flex-start; }
   @media (min-width: 900px) { .band-section:has(.cta-band) .cta-band .reach-ctas { grid-column: 2; grid-row: 1 / span 2; align-self: end; } }
+
+
+  /* ---- home: one fixed opening (no carousel), the four areas listed underneath ---- */
+  .hero-single .hero { padding-bottom: 56px; }
+  .home-areas { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 20px 56px; display: grid; gap: 0; }
+  @media (min-width: 768px) { .home-areas { grid-template-columns: repeat(2, 1fr); column-gap: 32px; padding: 0 32px 64px; } }
+  @media (min-width: 1024px) { .home-areas { grid-template-columns: repeat(4, 1fr); } }
+  .home-areas a { display: flex; flex-direction: column; gap: 6px; padding: 22px 0 18px; border-top: 1px solid var(--line); color: inherit; transition: border-color .2s; }
+  .home-areas a:hover { border-top-color: var(--accent); }
+  .home-areas b { font-family: "Newsreader", Georgia, serif; font-size: 21px; font-weight: 600; color: var(--ink); }
+  .home-areas span { font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+  .home-areas i { margin-top: 8px; font-style: normal; font-size: 14px; font-weight: 600; color: var(--accent); }
+  .home-areas i::after { content: " \2192"; }

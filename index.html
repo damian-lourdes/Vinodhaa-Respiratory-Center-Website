@@ -193,9 +193,11 @@
   </nav>
 </header>
 
-<section class="hero-carousel hero-single" id="top">
+<section class="hero-carousel" id="top" aria-roledescription="carousel" aria-label="Highlights">
 <div class="hc-backdrop" aria-hidden="true"><div class="lb-wrap"><img class="lb-static" src="images/lungs-static.svg?v=4" alt="" decoding="async" /><img class="lb-flow" src="images/lungs-flow.svg?v=4" alt="" decoding="async" /></div></div>
 <div class="hc-viewport">
+<div class="hc-track" id="hcTrack">
+<div class="hc-slide" role="group" aria-roledescription="slide" aria-label="1 of 4">
   <div class="hero">
     <div class="orb orb-drift" aria-hidden="true" style="left:-96px; top:-96px; width:288px; height:288px; --orb:var(--accent-soft); opacity:.6;"></div>
     <div class="orb orb-drift-slow" aria-hidden="true" style="right:-64px; top:160px; width:224px; height:224px; --orb:var(--accent-soft); opacity:.5;"></div>
@@ -225,14 +227,67 @@
     </div>
   </div>
 </div>
+<a class="hc-slide hc-link" href="sleep-lab.html" role="group" aria-roledescription="slide" aria-label="2 of 4: Sleep Lab">
+  <div class="hero">
+    <div class="orb orb-drift" aria-hidden="true" style="right:-80px; top:-80px; width:300px; height:300px; --orb:var(--accent-soft); opacity:.6;"></div>
+    <div>
+      <p class="eyebrow"><span class="eyebrow-dot"></span>Sleep Lab</p>
+      <h2 class="hc-title">Sleep studies &amp; therapy, in-clinic</h2>
+      <p class="lead">Diagnosis of sleep apnea and other sleep-related breathing disorders, with CPAP, BiPAP or home oxygen set up under the same doctor.</p>
+      <p class="hc-path">Consult, overnight sleep study, diagnosis, then therapy and follow-up.</p>
+      <div class="hero-ctas"><span class="btn btn-primary btn-lg hc-cta">Explore the Sleep Lab <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></span></div>
+    </div>
+    <div class="hero-art hero-partner">
+      <figure class="hero-partner-logo">
+        <img src="images/summa-logo.png" alt="Summa Institute of Sleep Medicine" width="708" height="200" decoding="async" />
+        <figcaption>Sleep studies run with the Summa Institute of Sleep Medicine</figcaption>
+      </figure>
+    </div>
+  </div>
+</a>
+<a class="hc-slide hc-link" href="pharmacy.html" role="group" aria-roledescription="slide" aria-label="3 of 4: Pharmacy">
+  <div class="hero">
+    <div class="orb orb-drift-slow" aria-hidden="true" style="left:-80px; bottom:-80px; width:280px; height:280px; --orb:var(--accent-soft); opacity:.6;"></div>
+    <div>
+      <p class="eyebrow"><span class="eyebrow-dot"></span>In-clinic Pharmacy</p>
+      <h2 class="hc-title">Medicines, delivered to your door</h2>
+      <p class="lead">Order on WhatsApp or call <strong>98410 32627</strong>. We pack your prescription at our in-clinic pharmacy and deliver it through Swiggy, Porter or Rapido.</p>
+      <div class="hero-ctas"><span class="btn btn-primary btn-lg hc-cta">See how to order <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></span></div>
+    </div>
+    <div class="hero-art hero-steps">
+      <ol class="hero-steps-list">
+        <li><b>WhatsApp or call</b><span>Share your prescription</span></li>
+        <li><b>Packed at our pharmacy</b><span>Order and total confirmed</span></li>
+        <li><b>Delivered to you</b><span>Swiggy, Porter or Rapido</span></li>
+      </ol>
+    </div>
+  </div>
+</a>
+<a class="hc-slide hc-link" href="products.html" role="group" aria-roledescription="slide" aria-label="4 of 4: Products">
+  <div class="hero">
+    <div class="orb orb-drift" aria-hidden="true" style="right:-60px; bottom:-60px; width:260px; height:260px; --orb:var(--accent-soft); opacity:.6;"></div>
+    <div>
+      <p class="eyebrow"><span class="eyebrow-dot"></span>Products</p>
+      <h2 class="hc-title">CPAP, BiPAP &amp; oxygen concentrators for less</h2>
+      <p class="lead">Buy breathing and sleep therapy equipment directly from the clinic, priced 5&ndash;10% below market, with guidance from the doctor who prescribed it.</p>
+      <div class="hero-ctas"><span class="btn btn-primary btn-lg hc-cta">View products <svg class="icon" width="16" height="16"><use href="#i-arrow"/></svg></span></div>
+    </div>
+    <div class="hero-art hero-doc">
+      <figure class="hero-doc-photo">
+        <img src="images/products/cpap.jpg" alt="CPAP machine" width="800" height="1000" decoding="async" loading="lazy" />
+        <figcaption><b>CPAP, BiPAP &amp; oxygen concentrators</b><span>5&ndash;10% below market price</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</a>
+</div>
+</div>
+<div class="hc-controls">
+  <button type="button" class="hc-arrow" id="hcPrev" aria-label="Previous slide"><svg class="icon" width="14" height="14"><use href="#i-chevron"/></svg></button>
+  <div class="hc-dots" id="hcDots"></div>
+  <button type="button" class="hc-arrow next" id="hcNext" aria-label="Next slide"><svg class="icon" width="14" height="14"><use href="#i-chevron"/></svg></button>
+</div>
 </section>
-
-<nav class="home-areas" aria-label="What we do">
-  <a href="respiratory-treatment.html"><b>Respiratory treatment</b><span>Asthma, COPD, ILD, pneumonia, TB and lung cancer care</span><i>Explore</i></a>
-  <a href="sleep-lab.html"><b>Sleep lab</b><span>Overnight sleep studies, with the Summa Institute of Sleep Medicine</span><i>Explore</i></a>
-  <a href="pharmacy.html"><b>Pharmacy</b><span>Order on WhatsApp, packed here and delivered to your door</span><i>How to order</i></a>
-  <a href="products.html"><b>CPAP, BiPAP &amp; oxygen</b><span>Machines 5&ndash;10% below market, set up by the clinic</span><i>View products</i></a>
-</nav>
 
 <div class="ticker" aria-hidden="true">
   <div class="track marquee-track" id="marqueeTrack">

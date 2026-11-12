@@ -183,9 +183,13 @@
     }
     // page titles: once the splash has gone (it clears by about 1s)
     var splash = !document.documentElement.classList.contains('no-splash') && document.querySelector('.splash');
+    if (splash) { // hold the home carousel's title folded until the splash has gone
+      document.documentElement.classList.add('ft-wait');
+      setTimeout(function () { document.documentElement.classList.remove('ft-wait'); }, 950);
+    }
     // only the home page headline folds in; every other title appears normally
     Array.prototype.forEach.call(document.querySelectorAll('.hero-carousel .hero h1'), function (h) {
-      if (split(h)) unfold(h, splash ? 950 : 80);
+      if (split(h) && !h.closest('.hc-slide')) unfold(h, splash ? 950 : 80); // home carousel titles play with their slide (CSS)
     });
     // home page: the fixed lungs behind the page fade to about half strength as you scroll past the hero (styles in css/styles.css)
   (function () {
@@ -268,6 +272,230 @@
         tab.setAttribute('aria-expanded', 'false');
       }
     });
+  })();
+
+  // hero carousel: auto-advances every few seconds, pauses on hover/focus or
+  // when the tab is hidden, and supports arrows, dots, swipe and arrow keys.
+  // Off-screen slides are made inert so their links can't be tabbed to.
+  (function () {
+    var root = document.querySelector('.hero-carousel');
+    var track = document.getElementById('hcTrack');
+    var dotsWrap = document.getElementById('hcDots');
+    if (!root || !track || !dotsWrap) return;
+
+    var slides = Array.prototype.slice.call(track.children);
+
+    // split each slide headline into masked words so it can rise in word by
+    // word; nested elements (e.g. the "30 years" line) move as one unit
+    slides.forEach(function (slide) {
+      var heading = slide.querySelector('h1, h2');
+      if (!heading) return;
+      var n = 0;
+      Array.prototype.slice.call(heading.childNodes).forEach(function (node) {
+        var frag = document.createDocumentFragment();
+        if (node.nodeType === 3) {
+          node.textContent.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+            var outer = document.createElement('span');
+            outer.className = 'w';
+            var inner = document.createElement('span');
+            inner.style.setProperty('--i', n++);
+            inner.textContent = part;
+            outer.appendChild(inner);
+            frag.appendChild(outer);
+          });
+        } else if (node.nodeType === 1) {
+          var block = document.createElement('span');
+          block.className = 'w w-block';
+          var wrap = document.createElement('span');
+          wrap.style.setProperty('--i', n++);
+          node.parentNode.insertBefore(block, node);
+          wrap.appendChild(node);
+          block.appendChild(wrap);
+          return;
+        } else {
+          return;
+        }
+        heading.replaceChild(frag, node);
+      });
+    });
+    var count = slides.length;
+    var INTERVAL = 3000;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var index = 0;
+    var timer = null;
+    var paused = false;
+    var movingTimer = null;
+
+    var dots = slides.map(function (slide, i) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'hc-dot';
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.addEventListener('click', function () { go(i); restart(); });
+      dotsWrap.appendChild(dot);
+      return dot;
+    });
+
+    // seamless loop: a copy of the first slide sits after the last one.
+    // Going forward from the last slide animates onto the copy, then snaps
+    // (without animation) back to the real first slide; going back from the
+    // first slide does the reverse.
+    var clone = slides[0].cloneNode(true);
+    clone.classList.add('hc-clone');
+    clone.removeAttribute('aria-label');
+    clone.setAttribute('aria-hidden', 'true');
+    clone.inert = true;
+    track.appendChild(clone);
+    var pos = 0; // track position, 0..count (count = the clone)
+
+    function setPos(p, animate) {
+      pos = p;
+      if (!animate) track.style.transition = 'none';
+      track.style.transform = 'translate3d(' + (-p * 100) + '%, 0, 0)';
+      if (!animate) {
+        track.offsetHeight; // apply the jump before restoring the transition
+        track.style.transition = '';
+      }
+    }
+
+    // once a slide has settled: if we landed on the clone, snap to the real
+    // first slide, then update which slides are inert. Nothing on the page is
+    // touched while the track is moving, so the compositor can run the slide
+    // without any repaint or layer rebuild mid-transition.
+    function settle() {
+      window.clearTimeout(movingTimer);
+      if (pos === count) setPos(0, false);
+      track.querySelectorAll('.is-leaving').forEach(function (el) { el.classList.remove('is-leaving'); });
+      slides.forEach(function (slide, k) {
+        var active = k === index;
+        if (slide.inert === active) {
+          slide.inert = !active;
+          slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+        }
+      });
+    }
+    track.addEventListener('transitionend', function (e) {
+      if (e.target === track) settle();
+    });
+
+    function go(i) {
+      if (pos === count) settle(); // finish a pending wrap before moving again
+      var next = (i + count) % count;
+      if (next === index) return;
+      var animate = !reduceMotion;
+      var target = next;
+      if (i >= count) {
+        target = count; // forward past the last slide: move onto the clone
+      } else if (i < 0) {
+        setPos(count, false); // back past the first slide: start from the clone
+      }
+      // direction drives the parallax: artwork travels further than the text
+      var dir = (i >= count || (i >= 0 && next > index)) ? 1 : -1;
+      root.style.setProperty('--hc-dir', dir);
+      var leaving = pos === count ? clone : slides[index];
+      leaving.classList.add('is-leaving');
+      if (leaving === slides[0]) clone.classList.add('is-leaving');
+      if (leaving === clone) slides[0].classList.add('is-leaving');
+      index = next;
+      updateDots();
+      activate(next);
+      runProgress();
+      setPos(target, animate);
+      if (animate) {
+        // fallback in case transitionend doesn't fire (e.g. tab in background)
+        window.clearTimeout(movingTimer);
+        movingTimer = window.setTimeout(settle, 1000);
+      } else {
+        settle();
+      }
+    }
+
+    function updateDots() {
+      dots.forEach(function (dot, k) {
+        dot.setAttribute('aria-current', k === index ? 'true' : 'false');
+      });
+    }
+    // entrance animation: the arriving slide gets .is-active, which fades and
+    // lifts its text in line by line and scales its artwork up (CSS). The clone
+    // mirrors slide 1 so the loop snap is invisible.
+    function activate(i) {
+      slides.forEach(function (slide, k) { slide.classList.toggle('is-active', k === i); });
+      clone.classList.toggle('is-active', i === 0);
+    }
+
+    // the active dot fills like a progress bar over the autoplay interval
+    function runProgress() {
+      dots.forEach(function (dot) { dot.classList.remove('run'); });
+      if (!timer) return;
+      void dots[index].offsetWidth; // restart the CSS animation
+      dots[index].classList.add('run');
+    }
+
+    function stop() {
+      window.clearInterval(timer);
+      timer = null;
+      root.classList.add('is-paused');
+    }
+    function start() {
+      stop();
+      if (reduceMotion || paused || document.hidden) return;
+      root.classList.remove('is-paused');
+      timer = window.setInterval(function () { go(index + 1); }, INTERVAL);
+      runProgress();
+    }
+    function restart() { start(); }
+
+    document.getElementById('hcPrev').addEventListener('click', function () { go(index - 1); restart(); });
+    document.getElementById('hcNext').addEventListener('click', function () { go(index + 1); restart(); });
+
+    root.addEventListener('mouseenter', function () { paused = true; stop(); });
+    root.addEventListener('mouseleave', function () { paused = false; start(); });
+    root.addEventListener('focusin', function () { paused = true; stop(); });
+    root.addEventListener('focusout', function (e) {
+      if (!root.contains(e.relatedTarget)) { paused = false; start(); }
+    });
+    document.addEventListener('visibilitychange', start);
+    root.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { go(index - 1); }
+      else if (e.key === 'ArrowRight') { go(index + 1); }
+    });
+
+    // swipe on touch screens; swallow the click that follows a swipe so a
+    // swipe across a linked slide doesn't navigate away
+    var startX = null, startY = null, swiped = false;
+    root.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse') return;
+      startX = e.clientX; startY = e.clientY; swiped = false;
+    });
+    root.addEventListener('pointerup', function (e) {
+      if (startX === null) return;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      startX = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+        swiped = true;
+        go(index + (dx < 0 ? 1 : -1));
+        restart();
+      }
+    });
+    root.addEventListener('click', function (e) {
+      if (swiped) { e.preventDefault(); swiped = false; }
+    }, true);
+
+    updateDots();
+    settle();
+    if (!reduceMotion) {
+      root.style.setProperty('--hc-interval', INTERVAL + 'ms');
+      root.classList.add('hc-anim');
+      // let the first paint happen hidden, then play slide 1's entrance
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () { activate(index); });
+      });
+    } else {
+      activate(0);
+    }
+    start();
   })();
 
   // marquee: clone the item set as many times as needed so the track always

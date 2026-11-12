@@ -31,7 +31,7 @@
     --navy-ink: #f2f4fa;
     --navy-ink-soft: #a4add0;
     --band: #16306e;
-    --deep: #1f4e9e; --deep-2: #2455a8; --deep-hover: #2455a8; /* royal sapphire: blue cards, footer and the remaining blue band */
+    --deep: #629242; --deep-2: #679846; --deep-hover: #679846; /* Summa logo green, slightly deepened: dark cards and footer */
     --band-ink: #ffffff;
     --font-sans: "Switzer", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
     --font-display: "Switzer", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
@@ -53,7 +53,7 @@
     --plum: #c4a6f2;
     --blush-ink: #a8e0b9;
     --alert: #f97066;
-      --deep: #163a78; --deep-2: #1a4284; --deep-hover: #1c4589;
+      --deep: #3e5b2a; --deep-2: #43612d; --deep-hover: #456430;
   }
   html[data-theme="light"] {
     --paper: #f8f9f7;
@@ -1420,3 +1420,11 @@
   .home-areas span { font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
   .home-areas i { margin-top: 8px; font-style: normal; font-size: 14px; font-weight: 600; color: var(--accent); }
   .home-areas i::after { content: " \2192"; }
+
+  /* on the Summa green, small text stays near-white so it reads clearly */
+  footer.site { --navy-ink-soft: rgba(255,255,255,0.92); --navy-line: rgba(255,255,255,0.22); }
+  .stories-section .featured-story, .stories-section .story-card { --navy-ink-soft: rgba(255,255,255,0.92); --navy-line: rgba(255,255,255,0.22); }
+  .band-section:has(.whyus-grid) .diff-card p { color: rgba(255,255,255,0.94); }
+  .band-section:has(.whyus-grid) .diff-card + .diff-card { border-color: rgba(255,255,255,0.22); }
+  .band-section:has(.reach-grid) .reach-card .addr-row p, .band-section:has(.reach-grid) .reach-card .hours-row .k { color: rgba(255,255,255,0.94); }
+  .band-section:has(.reach-grid) .reach-card .hours-rows { border-color: rgba(255,255,255,0.22); }
